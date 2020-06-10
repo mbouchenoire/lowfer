@@ -1,0 +1,35 @@
+#root {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  margin: 0;
+}
+
+html {
+  font-size: 12px !important;
+}
+
+.App {
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+  overflow: auto;
+}
+
+.Content {
+  background-color: #f9f9f9;
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+  overflow: auto;
+
+  > .ui.secondary.pointing.menu {
+    margin-bottom: 0;
+  }
+}
+
+.Detail {
+  display: flex;
+  flex-grow: 1;
+  overflow: auto;
+}

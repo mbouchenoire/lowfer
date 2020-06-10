@@ -1,0 +1,76 @@
+.Issues {
+  align-content: stretch;
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+  justify-content: center;
+
+  &--withList {
+    align-items: stretch;
+    flex-direction: row;
+    justify-content: start;
+  }
+
+  &-list {
+    width: 30em;
+    flex-shrink: 0;
+  }
+
+  img {
+    margin-top: 5em;
+    max-height: 50vh;
+    max-width: 50vw;
+  }
+
+  .message {
+    max-width: 50vw;
+  }
+}
+
+.ui.divided.items .Issue.item {
+  background-color: transparent;
+  cursor: pointer;
+  transition: 200ms all ease-in-out;
+  padding-top: 0.5rem;
+  padding-bottom: 0.5rem;
+
+  > .content {
+    padding: 1em;
+  }
+  &.active.item {
+    border-left: 4px solid #34495e;
+  }
+}
+
+.Issues-title.ui.header {
+  padding: 0.5em 0 0 0.5em;
+}
+
+.Issue-active {
+  flex-grow: 1;
+  overflow: auto;
+  padding: 1em;
+
+  &--noIssueSelected {
+    padding: 3em;
+  }
+}
+
+.Issue-active-graphContainer {
+  background-color: white;
+  height: 20em;
+}
+
+.Issue-active-content {
+  margin-top: 1em;
+}
+
+.Issues-list {
+  padding: 1em 1em 1em 0.1em;
+  overflow: auto;
+}
+
+.Issue-selected {
+  box-shadow: 0 1px 3px 0 #f2711c, 0 0 0 1px #f2711c;
+}

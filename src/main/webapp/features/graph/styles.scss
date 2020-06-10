@@ -1,0 +1,73 @@
+.Graph {
+  height: 100%;
+  position: relative;
+  text-align: center;
+  width: 100%;
+  z-index: 1;
+
+  .node text {
+    font-family: Lato, 'Helvetica Neue', Arial, Helvetica, sans-serif;
+  }
+
+  .Settings {
+    position: absolute;
+    right: 1rem;
+    top: 1rem;
+    width: 30rem;
+    z-index: 2;
+
+    .Settings-icon {
+      position: absolute;
+      right: 0;
+      cursor: pointer;
+    }
+    .Settings-card {
+      position: absolute;
+      top: 2rem;
+      width: 30rem;
+    }
+    .Settings-dropdown {
+      display: flex;
+      align-items: center;
+
+      > span {
+        width: 100%;
+        text-align: right;
+        padding-right: 1rem;
+      }
+    }
+  }
+}
+
+.Graph svg {
+  position: absolute;
+  left: 0;
+  height: 100%;
+  width: 100%;
+
+  image + text {
+    transform: translate(0px, 40px);
+  }
+}
+
+.Graph.coarsed {
+  .node text {
+    font-family: 'Comic Neue', sans-serif;
+  }
+}
+
+.Graph-clean {
+  &.hidden {
+    opacity: 0.1;
+  }
+  &.coarsed {
+    opacity: 0;
+  }
+  > svg > g > polygon {
+    fill: transparent;
+  }
+}
+
+.Graph-coarsed {
+  pointer-events: none;
+}

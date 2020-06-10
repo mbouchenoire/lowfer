@@ -1,0 +1,22 @@
+## Apply the Stable Dependencies Principle
+
+Less stable components should depend on more stable components.
+
+"Stability" is the amount of work to make a change.
+
+Components that are heavily depended on (say, a logging framework) are very stable, because it’s difficult to change.
+Components that rely on many other components are highly volatile (for example, a UI or service layer).
+
+```
+Stability = 1 - Instability
+Instability = Fan out / (Fan in + Fan out)
+Fan Out = Outgoing Dependencies
+Fan In = Incoming Dependencies
+```
+
+To avoid this, apply the [Dependency Inversion Principle](https://en.wikipedia.org/wiki/Dependency_inversion_principle).
+
+### References
+
+- [Clean Architecture - Robert C. Martin](https://www.goodreads.com/book/show/18043011-clean-architecture)
+

@@ -1,0 +1,20 @@
+## Avoid queue with multiple publishers
+
+A useful principle is to assign responsibility for propagating events of a specific type,
+to a single component: a single writer.
+
+So the Stock Service would own how the ‘Inventory of Stock’ progresses forward over time,
+the Orders Service would own Orders, etc.
+
+This helps funnel consistency, validation and other ‘write path’ concerns through a single code path
+(although not necessarily a single process).
+
+Assigning responsibility for event propagation is important because these aren’t just ephemeral events,
+or transient chit-chat. They represent shared facts, the [data-on-the-outside](http://cidrdb.org/cidr2005/papers/P12.pdf).
+As such, services need to take responsibility for curating these shared datasets over time:
+fixing errors, handling situations where schemas change etc.
+
+### References
+
+- [Build Services on a Backbone of Events - Ben Stopford](https://www.confluent.io/blog/build-services-backbone-events/)
+- [Data on the Outside versus Data on the Inside - Pat Helland](https://www.confluent.io/blog/build-services-backbone-events/)

@@ -1,0 +1,5 @@
+name: invalid-yaml
+
+components:
+ - name: component-name # indentation is only 1 space
+    type: service

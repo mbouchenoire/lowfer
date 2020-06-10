@@ -1,0 +1,35 @@
+.Header .ui.menu {
+  .Header-name {
+
+
+    .dropdown.icon {
+      font-size: 1.5rem;
+    }
+
+    .menu {
+      margin-top: 1em;
+      width: 100%;
+    }
+  }
+
+  .Header-link {
+    display: flex;
+  }
+
+  .Share-justShared {
+    color: #00cc00;
+  }
+}
+
+.Issue-labels {
+  margin-left: 1em;
+}
+
+.Architecture-select {
+  font-size: 1.5rem;
+  font-weight: bold;
+
+  .icon {
+    padding-right: 1em;
+  }
+}

@@ -1,0 +1,13 @@
+apply plugin: "war"
+
+bootWar {
+    mainClassName = "org.lowfer.LowferApp"
+    includes = ["WEB-INF/**", "META-INF/**"]
+}
+
+war {
+    webAppDirName = "build/resources/main/static/"
+    enabled = true
+    archiveExtension = "war.original"
+    includes = ["WEB-INF/**", "META-INF/**"]
+}

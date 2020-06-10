@@ -1,0 +1,30 @@
+.Editor {
+  position: relative;
+  width: 40rem !important;
+  z-index: 2;
+  background-color: #f9f9f9;
+}
+
+.Studio-graph {
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+}
+
+.ui.message.NoDraft {
+  align-self: center;
+  max-width: 50em;
+  margin: auto;
+}
+
+// I want to have the visual effect that this CSS does,
+// but it "desynchronize" the cursor from the editor.
+// Sadly, I'm no CSS expert...
+
+//.ace_layer {
+//  margin-top: 1em;
+//}
+//
+//.ace_content {
+//  margin-top: 1em;
+//}

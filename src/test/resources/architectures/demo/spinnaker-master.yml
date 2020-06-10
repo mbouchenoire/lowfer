@@ -1,0 +1,5 @@
+name: Spinnaker
+
+include:
+  - file: spinnaker-common.yml
+    relativeToMasterFile: true

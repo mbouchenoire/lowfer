@@ -1,0 +1,11 @@
+name: invalid-dependency-type
+
+components:
+  - name: component-name
+    type: service
+    dependencies:
+      - component: other-component-name
+        type: invalidtype
+
+  - name: other-component-name
+    type: service

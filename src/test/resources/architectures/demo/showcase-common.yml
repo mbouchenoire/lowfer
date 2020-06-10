@@ -1,0 +1,118 @@
+name: Sample
+
+components:
+  - name: Web App
+    type: frontend
+    dependencies:
+      - component: basket-library
+      - component: shopping-service
+      - component: search-engine
+
+  - name: mobile-app
+    label: Mobile App
+    type: frontend
+    dependencies:
+      - component: api-gateway
+      - component: firebase
+
+  - name: basket-library
+    type: Basket Library
+    type: library
+
+  - name: api-gateway
+    label: API Gateway
+    type: gateway
+    dependencies:
+      - component: shopping-service
+      - component: search-engine
+
+  - name: shopping-service
+    label: Shopping API
+    type: service
+    dependencies:
+      - component: shopping-database
+      - component: order-service
+      - component: basket-service
+      - component: delivery-service
+        type: pubkey
+
+  - name: order-service
+    label: Orders API
+    type: service
+    context: order
+    dependencies:
+      - component: inventory-service
+      - component: shopping-database
+      - component: order-requested
+        type: queue.publish
+      - component: order-validated
+        type: queue.subscribe
+
+  - name: order-requested
+    label: Order Requested
+    context: order
+    type: queue
+
+  - name: order-validated
+    label: Order Validated
+    context: order
+    type: queue
+
+  - name: order-confirmed
+    label: Order Confirmed
+    context: order
+    type: queue
+
+  - name: delivery-service
+    label: Delivery Service
+    type: service
+    dependencies:
+      - component: order-confirmed
+        type: queue.subscribe
+      - component: firebase
+
+  - name: firebase
+    label: Firebase
+    type: service
+
+  - name: inventory-service
+    label: Inventory API
+    type: service
+    dependencies:
+      - component: inventory-database
+      - component: image-storage
+      - component: shopping-service
+
+  - name: inventory-database
+    type: database
+
+  - name: basket-service
+    label: Basket API
+    type: service
+    dependencies:
+      - component: basket-database
+      - component: order-requested
+        type: queue.publish
+      - component: order-confirmed
+        type: queue.subscribe
+
+  - name: basket-database
+    type: database
+
+  - name: search-engine
+    label: Search Engine
+    type: service
+    dependencies:
+      - component: inventory-service
+      - component: search-cache
+
+  - name: search-cache
+    label: Redis
+    type: cache
+
+  - name: shopping-database
+    type: database
+
+  - name: image-storage
+    label: Amazon S3
+    type: object-storage

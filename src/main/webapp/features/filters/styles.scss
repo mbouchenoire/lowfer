@@ -1,0 +1,20 @@
+.Filters {
+  display: flex;
+  flex-shrink: 0;
+  margin: 1em;
+  position: relative;
+  width: 20em;
+
+  .ui.vertical.menu {
+    background-color: #f1f1f1;
+    border-radius: 0;
+    display: flex;
+    flex-grow: 1;
+    width: 100%;
+
+    > .header {
+      padding-top: 1em;
+      text-align: center;
+    }
+  }
+}

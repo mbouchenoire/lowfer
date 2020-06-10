@@ -1,0 +1,6 @@
+name: sample
+
+include:
+  - file: team1.yml
+    relativeToMasterFile: true
+  - file: src/test/resources/architectures/sample/team2.yml

@@ -1,0 +1,131 @@
+package org.lowfer.serde;
+
+import io.vavr.control.Try;
+import org.apache.commons.lang3.StringUtils;
+import org.lowfer.domain.common.*;
+import org.lowfer.domain.error.ComponentMissingTypeException;
+import org.lowfer.domain.error.InvalidDependencyTypeException;
+import org.lowfer.domain.error.ManifestYamlException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Component;
+import org.yaml.snakeyaml.Yaml;
+import org.yaml.snakeyaml.constructor.Constructor;
+import org.yaml.snakeyaml.scanner.ScannerException;
+
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.InputStream;
+import java.nio.file.Files;
+import java.util.Set;
+import java.util.stream.Collectors;
+
+import static com.google.common.base.Predicates.instanceOf;
+import static io.vavr.API.$;
+import static io.vavr.API.Case;
+import static io.vavr.control.Try.failure;
+
+@Component
+public class ManifestYamlParser implements ManifestSerializer, MasterManifestDeserializer {
+
+    private static final Logger LOG = LoggerFactory.getLogger(ManifestYamlParser.class);
+
+    private static final Yaml YAML = new Yaml(new Constructor(SoftwareArchitectureYaml.class));
+    private static final Yaml MASTER_YAML = new Yaml(new Constructor(Master.class));
+
+    @Override
+    public Try<SoftwareArchitecture> deserializeManifest(String manifest) {
+        //noinspection unchecked
+        return Try.of(() -> (SoftwareArchitectureYaml)YAML.load(manifest))
+            .mapFailure(Case($(instanceOf(ScannerException.class)), ManifestYamlException::new))
+            .flatMap(yaml -> load(yaml, false));
+    }
+
+    @Override
+    public Try<SoftwareArchitecture> deserializeManifest(File manifest) {
+        return Try.of(() -> Files.readAllBytes(manifest.toPath()))
+            .map(String::new)
+            .flatMap(this::deserializeManifest);
+    }
+
+    @Override
+    public Try<String> serializeManifest(SoftwareArchitecture architecture) {
+        return Try.of(() -> {
+            LOG.trace("Serializing architecture of {} component(s)...", architecture.getComponents().size());
+            final String manifest = YAML.dump(new SoftwareArchitectureYaml(architecture));
+            LOG.debug("Serialized architecture of {} component(s) to manifest of length={}", architecture.getComponents().size(), manifest.length());
+            return manifest;
+        });
+    }
+
+    @Override
+    public Try<SoftwareArchitecture> deserializeMasterManifest(File masterManifest) {
+        return Try.of(() -> {
+            LOG.debug("Deserializing master manifest from file: {}...", masterManifest);
+
+            final InputStream targetStream = new FileInputStream(masterManifest);
+            final Master master = MASTER_YAML.load(targetStream);
+
+            return master.getInclude().stream()
+                .map(include -> {
+                    LOG.debug("Including manifest file: {}...", include);
+                    final File includeFile = include.toFile(masterManifest);
+                    return parseFile(includeFile).getOrElseThrow(throwable ->
+                        new IllegalArgumentException("Failed to parse architecture included file", throwable));
+                })
+                .reduce(SoftwareArchitecture::concat)
+                .orElseThrow(() -> new IllegalArgumentException("Failed to parse architecture master file"))
+                .named(master.getName());
+        });
+    }
+
+    private static Try<SoftwareArchitecture> parseFile(File file) {
+        LOG.debug("Parsing manifest file: {}...", file);
+        return Try.of(() -> new FileInputStream(file))
+            .map(fileInputStream -> (SoftwareArchitectureYaml) YAML.load(fileInputStream))
+            .flatMap(yaml -> load(yaml, true));
+    }
+
+    private static Try<SoftwareArchitecture> load(SoftwareArchitectureYaml architectureYaml, boolean lazy) {
+        LOG.debug("Loading architecture from yaml representation (name: {})...", architectureYaml.getName());
+
+        final Set<Try<SoftwareComponent>> componentTries = architectureYaml.getComponents().stream()
+            .<Try<SoftwareComponent>>map(componentYaml -> {
+                if (StringUtils.isBlank(componentYaml.getType())) {
+                    return failure(new ComponentMissingTypeException(componentYaml.getName()));
+                }
+
+                final Set<Try<ComponentDependency>> dependencyTries = componentYaml.getDependencies().stream()
+                    .map(dependencyYaml -> {
+                        final Try<DependencyType> dependencyTypeTry = DependencyType
+                            .fromSerializedName(dependencyYaml.getType())
+                            .map(Try::success)
+                            .orElse(failure(new InvalidDependencyTypeException(componentYaml.getName(), dependencyYaml.getComponent(), dependencyYaml.getType())));
+
+                        return dependencyTypeTry
+                            .map(dependencyType -> new ComponentDependency(dependencyYaml.getComponent(), dependencyType));
+                    })
+                    .collect(Collectors.toSet());
+
+                final Set<Maintainer> maintainers = componentYaml.getMaintainers().stream()
+                    .map(maintainerYaml -> {
+                        final SemanticUIColor color = SemanticUIColor.randomFromSeed(maintainerYaml.getName());
+                        return new Maintainer(maintainerYaml.getName(), color);
+                    })
+                    .collect(Collectors.toSet());
+
+                return Try.sequence(dependencyTries)
+                    .map(dependencies -> new SoftwareComponent(
+                        componentYaml.getName(),
+                        componentYaml.getLabel(),
+                        SoftwareComponentType.fromSerializedName(componentYaml.getType()).orElseThrow(),
+                        componentYaml.getContext(),
+                        maintainers,
+                        dependencies.toJavaSet()));
+            })
+            .collect(Collectors.toSet());
+
+        return Try.sequence(componentTries)
+            .flatMap(components -> SoftwareArchitecture.of(architectureYaml.getName(), components.toJavaSet(), lazy));
+    }
+}

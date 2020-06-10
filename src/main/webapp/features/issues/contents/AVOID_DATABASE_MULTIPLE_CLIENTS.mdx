@@ -1,0 +1,17 @@
+## Avoid database with multiple clients
+
+A service may consist of multiple processes that will always be developed and deployed together,
+such as an application process and a database that's only used by that service.
+
+Keep each service’s persistent data private to that service and accessible only via its API.
+A service’s transactions should only involve its database.
+
+If there is a need to access a database used by *an other* service (for SQL transactions for example),
+it might be a sign that there is an issue with the services' size / boundaries.
+
+### References
+
+- [Microservices - Martin Fowler](https://martinfowler.com/articles/microservices.html)
+- [Database per service - Chris Richardson](https://microservices.io/patterns/data/database-per-service.html)
+- [Shared Database anti-pattern - Chris Richardson](https://microservices.io/patterns/data/shared-database.html)
+- [What's the right size for a microservice ? - Kyle Gene Brown](https://medium.com/@kylegenebrown/whats-the-right-size-for-a-microservice-bf1740370d47)

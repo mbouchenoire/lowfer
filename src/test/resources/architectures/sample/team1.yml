@@ -1,0 +1,5 @@
+name: team1
+
+components:
+  - name: c1
+    type: service

@@ -1,0 +1,87 @@
+# ===================================================================
+# Spring Boot configuration.
+#
+# This configuration is used for unit/integration tests.
+#
+# More information on profiles: https://www.jhipster.tech/profiles/
+# More information on configuration properties: https://www.jhipster.tech/common-application-properties/
+# ===================================================================
+
+# ===================================================================
+# Standard Spring Boot properties.
+# Full reference is available at:
+# http://docs.spring.io/spring-boot/docs/current/reference/html/common-application-properties.html
+# ===================================================================
+
+spring:
+  application:
+    name: lowfer
+  main:
+    allow-bean-definition-overriding: true
+  messages:
+    basename: i18n/messages
+  mvc:
+    favicon:
+      enabled: false
+  security:
+    user:
+      name: test
+      password: test
+  task:
+    execution:
+      thread-name-prefix: lowfer-task-
+      pool:
+        core-size: 1
+        max-size: 50
+        queue-capacity: 10000
+    scheduling:
+      thread-name-prefix: lowfer-scheduling-
+      pool:
+        size: 1
+
+server:
+  port: 10344
+  address: localhost
+
+# ===================================================================
+# JHipster specific properties
+#
+# Full reference is available at: https://www.jhipster.tech/common-application-properties/
+# ===================================================================
+
+jhipster:
+  clientApp:
+    name: 'lowferApp'
+  logging:
+    # To test json console appender
+    use-json-format: true # By default, logs are in Json format
+    # To test logstash appender
+    logstash:
+      enabled: true
+      host: localhost
+      port: 5000
+      queue-size: 512
+  security:
+    authentication:
+      jwt:
+        # This token must be encoded using Base64 (you can type `echo 'secret-key'|base64` on your command line)
+        base64-secret: YzQzODUyZTA5YjY2MWZiZjQ2ZTAzMTA3OTM3OTIzNmUzNGIyMTE3YWZkNzAzNzlmMmQxYjA4YTkxOGUxNmM5NjE1Y2M5ZThiNTRkMTMxNjNkMmY0ZmVkZTIzMjU3N2NkODYyNDY0Y2FlY2Y4OWZkMWZjY2M2YTA3ODJlOWZhMzQ=
+        # Token is valid 24 hours
+        token-validity-in-seconds: 86400
+  metrics:
+    logs: # Reports metrics in the logs
+      enabled: true
+      report-frequency: 60 # in seconds
+
+# ===================================================================
+# Application specific properties
+# Add your own application properties here, see the ApplicationProperties class
+# to have type-safe configuration, like in the JHipsterProperties above
+#
+# More documentation is available at:
+# https://www.jhipster.tech/common-application-properties/
+# ===================================================================
+
+application:
+  architectures:
+    directory: src/test/resources/architectures/spinnaker

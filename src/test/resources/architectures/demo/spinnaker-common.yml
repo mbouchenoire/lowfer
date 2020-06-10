@@ -1,0 +1,190 @@
+name: Spinnaker
+
+components:
+  - name: api-caller
+    label: Custom Script/API Caller
+    type: script
+    dependencies:
+      - component: gate
+    maintainers:
+      - name: external
+
+  - name: deck
+    label: Deck
+    type: frontend
+    context: spinnaker
+    maintainers:
+      - name: spinnaker
+    dependencies:
+      - component: gate
+
+  - name: gate
+    label: Gate
+    type: service
+    context: spinnaker
+    maintainers:
+      - name: spinnaker
+    dependencies:
+      - component: orca
+      - component: clouddriver
+      - component: front50
+      - component: rosco
+      - component: igor
+      - component: echo
+      - component: fiat
+      - component: kayenta
+      - component: redis
+      - component: authentication-provider
+
+  - name: igor
+    label: Igor
+    type: service
+    context: spinnaker
+    maintainers:
+        - name: spinnaker
+    dependencies:
+      - component: echo
+      - component: redis
+      - component: ci-system
+
+  - name: echo
+    label: Echo
+    type: service
+    context: spinnaker
+    maintainers:
+      - name: spinnaker
+    dependencies:
+      - component: orca
+      - component: front50
+      - component: ci-system
+
+  - name: orca
+    label: Orca
+    type: service
+    context: spinnaker
+    maintainers:
+        - name: spinnaker
+    dependencies:
+      - component: kayenta
+      - component: rosco
+      - component: clouddriver
+      - component: front50
+      - component: fiat
+      - component: redis
+
+  - name: kayenta
+    label: Kayenta
+    type: service
+    context: spinnaker
+    maintainers:
+      - name: spinnaker
+    dependencies:
+      - component: redis
+      - component: telemetry-store
+      - component: persistence-store
+
+  - name: rosco
+    label: Rosco
+    type: service
+    context: spinnaker
+    maintainers:
+      - name: spinnaker
+    dependencies:
+      - component: redis
+      - component: cloud-provider
+
+  - name: clouddriver
+    label: Clouddriver
+    type: service
+    context: spinnaker
+    maintainers:
+        - name: spinnaker
+    dependencies:
+      - component: fiat
+      - component: redis
+      - component: cloud-provider
+      - component: discovery-service
+
+  - name: front50
+    label: Front50
+    type: service
+    context: spinnaker
+    maintainers:
+      - name: spinnaker
+    dependencies:
+      - component: fiat
+      - component: cloud-provider
+      - component: persistence-store
+
+  - name: fiat
+    label: Fiat
+    type: service
+    context: spinnaker
+    maintainers:
+        - name: spinnaker
+    dependencies:
+      - component: redis
+      - component: role-provider
+
+  - name: halyard-cli
+    label: Halyard-CLI
+    type: frontend
+    context: spinnaker
+    maintainers:
+      - name: spinnaker
+    dependencies:
+      - component: halyard-daemon
+
+  - name: halyard-daemon
+    label: Halyard Daemon
+    type: service
+    context: spinnaker
+    maintainers:
+      - name: spinnaker
+
+  - name: redis
+    label: Redis
+    type: cache
+    maintainers:
+      - name: external
+
+  - name: authentication-provider
+    label: OAuth,LDAP,SAML...
+    type: service
+    maintainers:
+      - name: external
+
+  - name: role-provider
+    type: service
+    maintainers:
+      - name: external
+
+  - name: cloud-provider
+    label: Cloud Provider
+    type: service
+    maintainers:
+      - name: external
+
+  - name: discovery-service
+    label: Eureka,Consul...
+    type: service
+    maintainers:
+      - name: external
+
+  - name: persistence-store
+    type: service
+    label: GCS or S3
+    maintainers:
+      - name: external
+
+  - name: telemetry-store
+    label: Prometheus,Datadog...
+    type: service
+    maintainers:
+      - name: external
+
+  - name: ci-system
+    label: Jenkins,Travis CI...
+    type: service
+    maintainers:
+      - name: external

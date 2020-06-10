@@ -1,0 +1,5 @@
+name: Showcase
+
+include:
+  - file: showcase-common.yml
+    relativeToMasterFile: true

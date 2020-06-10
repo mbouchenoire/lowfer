@@ -1,0 +1,23 @@
+.Overview {
+  display: flex;
+  flex-direction: row;
+  flex-grow: 1;
+}
+
+.Overview-container {
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+  padding: 1em;
+}
+
+.Overview-graphContainer {
+  display: flex;
+  flex-grow: 1;
+  padding: 2em;
+  width: 100%;
+}
+
+.Statistics {
+  min-height: 5em;
+}
