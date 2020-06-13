@@ -1,5 +1,9 @@
 # Lowfer
 
+[![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0) &nbsp;
+[![Build Status](https://travis-ci.org/mbouchenoire/varys.svg?branch=master)](https://travis-ci.org/mbouchenoire/varys) &nbsp;
+[![Docker Hub](https://img.shields.io/docker/pulls/mbouchenoire/lowfer.svg)](https://hub.docker.com/r/mbouchenoire/lowfer) &nbsp;
+
 This application was generated using JHipster 6.1.2, you can find documentation and help at [https://www.jhipster.tech/documentation-archive/v6.1.2](https://www.jhipster.tech/documentation-archive/v6.1.2).
 
 ## Development
