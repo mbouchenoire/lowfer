@@ -35,13 +35,13 @@ import java.util.Arrays;
 import java.util.Collection;
 
 @SpringBootApplication
-public class LowferApp implements InitializingBean {
+public class Lowfer implements InitializingBean {
 
-    private static final Logger log = LoggerFactory.getLogger(LowferApp.class);
+    private static final Logger log = LoggerFactory.getLogger(Lowfer.class);
 
     private final Environment env;
 
-    public LowferApp(Environment env) {
+    public Lowfer(Environment env) {
         this.env = env;
     }
 
@@ -71,7 +71,7 @@ public class LowferApp implements InitializingBean {
      * @param args the command line arguments.
      */
     public static void main(String[] args) {
-        SpringApplication app = new SpringApplication(LowferApp.class);
+        SpringApplication app = new SpringApplication(Lowfer.class);
         DefaultProfileUtil.addDefaultProfile(app);
         Environment env = app.run(args).getEnvironment();
         logApplicationStartup(env);

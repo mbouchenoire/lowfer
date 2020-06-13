@@ -21,7 +21,7 @@ package org.lowfer.web.rest.errors;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.lowfer.LowferApp;
+import org.lowfer.Lowfer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
@@ -36,7 +36,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 /**
  * Integration tests {@link ExceptionTranslator} controller advice.
  */
-@SpringBootTest(classes = LowferApp.class)
+@SpringBootTest(classes = Lowfer.class)
 public class ExceptionTranslatorIT {
 
     @Autowired

@@ -21,7 +21,7 @@ package org.lowfer.web.rest;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.lowfer.LowferApp;
+import org.lowfer.Lowfer;
 import org.lowfer.security.jwt.TokenProvider;
 import org.lowfer.web.rest.errors.ExceptionTranslator;
 import org.lowfer.web.rest.vm.LoginVM;
@@ -38,7 +38,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 /**
  * Integration tests for the {@link UserJWTController} REST controller.
  */
-@SpringBootTest(classes = LowferApp.class)
+@SpringBootTest(classes = Lowfer.class)
 public class UserJWTControllerIT {
 
     @Autowired

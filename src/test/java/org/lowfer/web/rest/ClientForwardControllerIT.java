@@ -21,7 +21,7 @@ package org.lowfer.web.rest;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.lowfer.LowferApp;
+import org.lowfer.Lowfer;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
@@ -36,7 +36,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 /**
  * Integration tests for the {@link ClientForwardController} REST controller.
  */
-@SpringBootTest(classes = LowferApp.class)
+@SpringBootTest(classes = Lowfer.class)
 public class ClientForwardControllerIT {
 
     private MockMvc restMockMvc;
