@@ -118,7 +118,7 @@ info:
 
 jhipster:
   clientApp:
-    name: "lowferApp"
+    name: "lowfer"
   # By default CORS is disabled. Uncomment to enable.
   # cors:
   #     allowed-origins: "*"

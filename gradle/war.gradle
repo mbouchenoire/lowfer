@@ -1,7 +1,7 @@
 apply plugin: "war"
 
 bootWar {
-    mainClassName = "org.lowfer.LowferApp"
+    mainClassName = "org.lowfer.Lowfer"
     includes = ["WEB-INF/**", "META-INF/**"]
 }
 
