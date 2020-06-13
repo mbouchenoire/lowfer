@@ -89,12 +89,12 @@ if (OperatingSystem.current().isWindows()) {
 defaultTasks "bootRun"
 
 group = "org.lowfer"
-version = "0.1.0-SNAPSHOT"
+version = "0.1.0-snapshot"
 
 description = ""
 
 springBoot {
-    mainClassName = "org.lowfer.LowferApp"
+    mainClassName = "org.lowfer.Lowfer"
 }
 
 test {

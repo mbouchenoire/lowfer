@@ -26,12 +26,13 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
+import org.springframework.stereotype.Repository;
 
 import java.io.File;
 import java.util.*;
 import java.util.stream.Collectors;
 
-//@Repository
+@Repository
 @ConditionalOnProperty(prefix = "application.architectures.", value = "directory")
 @ConditionalOnMissingBean(ArchitectureGitRepository.class)
 public class ArchitectureDirectoryRepository implements ArchitectureRepository {
