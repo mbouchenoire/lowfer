@@ -25,7 +25,7 @@ import org.lowfer.domain.common.ArchitectureTransformer;
 import org.lowfer.domain.common.SoftwareArchitecture;
 import org.lowfer.domain.common.SoftwareComponentFilter;
 import org.lowfer.domain.error.ArchitectureNotFoundException;
-import org.lowfer.repository.StaticArchitectureRepository;
+import org.lowfer.repository.ArchitectureRepository;
 import org.lowfer.serde.ManifestEncoder;
 import org.lowfer.serde.ManifestSerializer;
 import org.lowfer.web.rest.vm.IssueView;
@@ -47,25 +47,25 @@ public class ArchitectureService {
 
     private static final Logger LOG = LoggerFactory.getLogger(ArchitectureService.class);
 
-    private final StaticArchitectureRepository staticArchitectureRepository;
+    private final ArchitectureRepository architectureRepository;
     private final ArchitectureTransformer architectureTransformer;
     private final ManifestSerializer manifestSerializer;
     private final ManifestEncoder manifestEncoder;
 
     public ArchitectureService(
-        StaticArchitectureRepository staticArchitectureRepository,
+        ArchitectureRepository architectureRepository,
         ArchitectureTransformer architectureTransformer,
         ManifestSerializer manifestSerializer,
         ManifestEncoder manifestEncoder) {
 
-        this.staticArchitectureRepository = staticArchitectureRepository;
+        this.architectureRepository = architectureRepository;
         this.architectureTransformer = architectureTransformer;
         this.manifestSerializer = manifestSerializer;
         this.manifestEncoder = manifestEncoder;
     }
 
     public List<SoftwareArchitecture> findAll() {
-        return staticArchitectureRepository.findAll();
+        return architectureRepository.findAll();
     }
 
     public Try<SoftwareArchitecture> load(String name, String encoded) {
@@ -73,8 +73,8 @@ public class ArchitectureService {
             throw new IllegalArgumentException("Cannot load architecture when given both name and encoded representation");
 
         if (isNotBlank(name)) {
-            LOG.debug("Finding static architecture with name='{}'...", name);
-            return staticArchitectureRepository.findByName(name)
+            LOG.debug("Finding architecture with name='{}'...", name);
+            return architectureRepository.findByName(name)
                 .map(Try::success)
                 .orElse(failure(new ArchitectureNotFoundException(name)));
         }

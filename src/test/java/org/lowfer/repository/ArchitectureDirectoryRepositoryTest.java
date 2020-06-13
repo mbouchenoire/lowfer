@@ -25,11 +25,11 @@ import org.lowfer.serde.ManifestYamlParser;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class StaticArchitectureRepositoryTest {
+class ArchitectureDirectoryRepositoryTest {
 
     @Test
     public void testFindArchitectureByName() {
-        final StaticArchitectureRepository repository = new StaticArchitectureRepository(
+        final ArchitectureDirectoryRepository repository = new ArchitectureDirectoryRepository(
             "src/test/resources/architectures/sample", new ManifestYamlParser());
 
         final SoftwareArchitecture sample = repository.findByName("sample").orElseThrow();

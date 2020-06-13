@@ -166,6 +166,7 @@ dependencies {
     implementation "com.fasterxml.jackson.module:jackson-module-afterburner"
     implementation "org.apache.commons:commons-lang3"
     implementation "commons-io:commons-io"
+    implementation "org.eclipse.jgit:org.eclipse.jgit:5.7.0.202003110725-r"
     implementation "org.springframework.boot:spring-boot-loader-tools"
     implementation "org.springframework.boot:spring-boot-starter-logging"
     implementation "org.springframework.boot:spring-boot-starter-actuator"

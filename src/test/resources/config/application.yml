@@ -84,4 +84,4 @@ jhipster:
 
 application:
   architectures:
-    directory: src/test/resources/architectures/spinnaker
+    directory: src/test/resources/architectures/demo

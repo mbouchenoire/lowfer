@@ -24,24 +24,23 @@ import org.lowfer.serde.MasterManifestDeserializer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.stereotype.Repository;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 
 import java.io.File;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
 
-@Repository
-public class StaticArchitectureRepository {
+//@Repository
+@ConditionalOnProperty(prefix = "application.architectures.", value = "directory")
+@ConditionalOnMissingBean(ArchitectureGitRepository.class)
+public class ArchitectureDirectoryRepository implements ArchitectureRepository {
 
-    private static final Logger LOG = LoggerFactory.getLogger(StaticArchitectureRepository.class);
+    private static final Logger LOG = LoggerFactory.getLogger(ArchitectureDirectoryRepository.class);
 
     private final Map<String, SoftwareArchitecture> architectures;
 
-    public StaticArchitectureRepository(
+    public ArchitectureDirectoryRepository(
         @Value("${application.architectures.directory}") String architecturesDirectoryPath,
         MasterManifestDeserializer masterManifestDeserializer) {
 
@@ -60,13 +59,15 @@ public class StaticArchitectureRepository {
                 .getOrElseThrow(throwable -> new IllegalStateException("Could not load software architecture", throwable)))
             .collect(Collectors.toMap(SoftwareArchitecture::getName, architecture -> architecture));
 
-        LOG.info("Loaded {} static architecture(s)", architectures.size());
+        LOG.info("Loaded {} architecture(s) from directory: {}", architectures.size(), architecturesDirectory);
     }
 
+    @Override
     public Optional<SoftwareArchitecture> findByName(String name) {
         return Optional.ofNullable(architectures.get(name));
     }
 
+    @Override
     public List<SoftwareArchitecture> findAll() {
         return new ArrayList<>(architectures.values());
     }
