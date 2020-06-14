@@ -55,10 +55,9 @@ enum Prefix {
 }
 
 const issueColor: Record<string, SemanticCOLORS> = {
-  blockers: 'red',
-  criticals: 'orange',
-  majors: 'yellow',
-  minors: 'olive'
+  criticals: 'red',
+  majors: 'orange',
+  minors: 'yellow'
 };
 
 const Header = () => {

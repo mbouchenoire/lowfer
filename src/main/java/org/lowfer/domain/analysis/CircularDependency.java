@@ -61,7 +61,7 @@ public final class CircularDependency implements Issue {
 
     @Override
     public Severity getSeverity() {
-        return Severity.BLOCKER;
+        return Severity.CRITICAL;
     }
 
     @Override

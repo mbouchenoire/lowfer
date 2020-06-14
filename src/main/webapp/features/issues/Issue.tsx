@@ -18,7 +18,7 @@
  */
 
 import React from 'react';
-import { Icon, Label, Card } from 'semantic-ui-react';
+import { Card, Icon, Label } from 'semantic-ui-react';
 
 import { IssueView, IssueViewSeverityEnum } from '../../services';
 import { severityColor } from './utils';
@@ -28,10 +28,8 @@ const SeverityIcon = ({ severity }: { severity?: IssueViewSeverityEnum }) => {
     default:
     case IssueViewSeverityEnum.CRITICAL:
       return <Icon name="warning sign" color={severityColor(severity)} />;
-    case IssueViewSeverityEnum.BLOCKER:
-      return <Icon name="warning circle" color={severityColor(severity)} />;
     case IssueViewSeverityEnum.MAJOR:
-      return <Icon name="warning" color={severityColor(severity)} />;
+      return <Icon name="warning circle" color={severityColor(severity)} />;
     case IssueViewSeverityEnum.MINOR:
       return <Icon name="info" color={severityColor(severity)} />;
   }

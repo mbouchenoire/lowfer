@@ -21,13 +21,11 @@ import { IssueViewSeverityEnum } from '../../services';
 
 export const severityColor = (severity: IssueViewSeverityEnum | undefined) => {
   switch (severity) {
-    case IssueViewSeverityEnum.BLOCKER:
-      return 'red';
     case IssueViewSeverityEnum.CRITICAL:
-      return 'orange';
+      return 'red';
     case IssueViewSeverityEnum.MAJOR:
-      return 'yellow';
+      return 'orange';
     case IssueViewSeverityEnum.MINOR:
-      return 'olive';
+      return 'yellow';
   }
 };

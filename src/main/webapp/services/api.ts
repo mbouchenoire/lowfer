@@ -190,7 +190,6 @@ export interface IssueView {
  * @enum {string}
  */
 export enum IssueViewSeverityEnum {
-  BLOCKER = 'BLOCKER',
   CRITICAL = 'CRITICAL',
   MAJOR = 'MAJOR',
   MINOR = 'MINOR'

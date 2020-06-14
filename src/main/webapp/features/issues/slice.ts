@@ -114,7 +114,6 @@ const createGetBySeverity = (severity: IssueViewSeverityEnum) =>
     filter((issue) => issue.severity === severity)
   );
 
-const getBlockers = createGetBySeverity(IssueViewSeverityEnum.BLOCKER);
 const getCriticals = createGetBySeverity(IssueViewSeverityEnum.CRITICAL);
 const getMajors = createGetBySeverity(IssueViewSeverityEnum.MAJOR);
 const getMinors = createGetBySeverity(IssueViewSeverityEnum.MINOR);
@@ -133,9 +132,8 @@ const getActiveIssueData = (state: RootState) =>
   state.issues.data.find((issue) => issue.id === state.issues.activeIssue.id);
 
 const getByKey = createSelector(
-  [getBlockers, getCriticals, getMajors, getMinors],
-  (blockers, criticals, majors, minors) => ({
-    blockers,
+  [getCriticals, getMajors, getMinors],
+  (criticals, majors, minors) => ({
     criticals,
     majors,
     minors
@@ -159,7 +157,6 @@ export const selectors = {
   getActiveIssueError,
   getActiveIssueId,
   getActiveIssueStatus,
-  getBlockers,
   getByKey,
   getCountByKey,
   getCriticals,

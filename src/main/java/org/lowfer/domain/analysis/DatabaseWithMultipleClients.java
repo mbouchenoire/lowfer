@@ -67,7 +67,7 @@ public final class DatabaseWithMultipleClients implements Issue {
 
     @Override
     public Severity getSeverity() {
-        return Severity.CRITICAL;
+        return Severity.MAJOR;
     }
 
     @Override
