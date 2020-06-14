@@ -41,7 +41,7 @@ jobs:
       if: type IN (tag)
       script:
         - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
-        - ./gradlew jib -Djib.to.image=registry.hub.docker.com/mbouchenoire/lowfer:${TRAVIS_BRANCH}
+        - ./gradlew jib -Djib.to.image=registry.hub.docker.com/mbouchenoire/lowfer:${TRAVIS_TAG}
     - stage: publish
       if: (NOT (type IN (tag, pull_request)))
       script:

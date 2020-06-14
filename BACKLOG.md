@@ -8,8 +8,6 @@
 -   [ ] (backend) crawl technologies
 -   [ ] (backend) technology related issues
 -   [ ] (frontend)(studio) readonly draft for saved architectures
--   [ ] (frontend) fix autocomplete
--   [ ] (ops) publish docker image (automated)
 -   [ ] (ops) host demo (automated)
 
 ## v0.x
@@ -26,7 +24,3 @@
 -   [ ] (frontend) cache shit
 -   [ ] (ops) test coverage (with github badge)
 -   [ ] (misc) logo
-
-## v2
-
--   [ ] graphic ide
