@@ -41,10 +41,14 @@ public final class SoftwareArchitectureMother {
      * @return front -> api2 -> (bdd + api1)
      */
     public static SoftwareArchitecture simple() {
-        final SoftwareComponent bdd = new SoftwareComponent(BDD, "", DATABASE, null, emptySet(), emptySet());
-        final SoftwareComponent apiBack = new SoftwareComponent(API_BACK, "", SERVICE, null, emptySet(), emptySet());
-        final SoftwareComponent apiFront = new SoftwareComponent(API_FRONT, "", SERVICE, null, emptySet(), Set.of(new ComponentDependency(bdd), new ComponentDependency(apiBack)));
-        final SoftwareComponent front = new SoftwareComponent(FRONT, "", FRONTEND, null, emptySet(), singleton(new ComponentDependency(apiFront)));
+        final SoftwareComponent bdd = new SoftwareComponent(BDD, "", DATABASE, null, null, emptySet(), emptySet());
+        final SoftwareComponent apiBack = new SoftwareComponent(API_BACK, "", SERVICE, null, null, emptySet(), emptySet());
+        final SoftwareComponent apiFront = new SoftwareComponent(API_FRONT, "", SERVICE, null, null, emptySet(), Set.of(new ComponentDependency(bdd), new ComponentDependency(apiBack)));
+        final SoftwareComponent front = new SoftwareComponent(FRONT, "", FRONTEND, null, null, emptySet(), singleton(new ComponentDependency(apiFront)));
         return new SoftwareArchitecture(UUID.randomUUID().toString(), Set.of(bdd, apiBack, apiFront , front));
+    }
+
+    public static SoftwareArchitecture single(SoftwareComponent component) {
+        return new SoftwareArchitecture(UUID.randomUUID().toString(), Set.of(component));
     }
 }

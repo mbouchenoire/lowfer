@@ -35,7 +35,7 @@ public class ArchitectureGitRepository implements ArchitectureRepository {
         @Value("${application.architectures.repository.username:}") String username,
         @Value("${application.architectures.repository.password:}") String password) throws IOException, GitAPIException {
 
-        final File directoryFile = Files.createTempDirectory("lowfer-git").toFile();
+        final File directoryFile = Files.createTempDirectory("lowfer-versioned-architectures-").toFile();
 
         LOG.info("Created temp directory ({}) for repository: {}", directoryFile, uri);
 
@@ -65,4 +65,6 @@ public class ArchitectureGitRepository implements ArchitectureRepository {
     public List<SoftwareArchitecture> findAll() {
         return architectureDirectoryRepository.findAll();
     }
+
+
 }

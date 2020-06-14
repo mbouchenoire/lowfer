@@ -13,6 +13,7 @@ components:
     label: Deck
     type: frontend
     context: spinnaker
+    repository: https://github.com/spinnaker/deck.git
     maintainers:
       - name: spinnaker
     dependencies:
@@ -22,6 +23,7 @@ components:
     label: Gate
     type: service
     context: spinnaker
+    repository: https://github.com/spinnaker/gate.git
     maintainers:
       - name: spinnaker
     dependencies:
@@ -40,6 +42,7 @@ components:
     label: Igor
     type: service
     context: spinnaker
+    repository: https://github.com/spinnaker/igor.git
     maintainers:
         - name: spinnaker
     dependencies:
@@ -51,6 +54,7 @@ components:
     label: Echo
     type: service
     context: spinnaker
+    repository: https://github.com/spinnaker/echo.git
     maintainers:
       - name: spinnaker
     dependencies:
@@ -62,6 +66,7 @@ components:
     label: Orca
     type: service
     context: spinnaker
+    repository: https://github.com/spinnaker/orca.git
     maintainers:
         - name: spinnaker
     dependencies:
@@ -76,6 +81,7 @@ components:
     label: Kayenta
     type: service
     context: spinnaker
+    repository: https://github.com/spinnaker/kayenta.git
     maintainers:
       - name: spinnaker
     dependencies:
@@ -87,6 +93,7 @@ components:
     label: Rosco
     type: service
     context: spinnaker
+    repository: https://github.com/spinnaker/rosco.git
     maintainers:
       - name: spinnaker
     dependencies:
@@ -97,6 +104,7 @@ components:
     label: Clouddriver
     type: service
     context: spinnaker
+    repository: https://github.com/spinnaker/clouddriver.git
     maintainers:
         - name: spinnaker
     dependencies:
@@ -109,6 +117,7 @@ components:
     label: Front50
     type: service
     context: spinnaker
+    repository: https://github.com/spinnaker/front50.git
     maintainers:
       - name: spinnaker
     dependencies:
@@ -120,6 +129,7 @@ components:
     label: Fiat
     type: service
     context: spinnaker
+    repository: https://github.com/spinnaker/fiat.git
     maintainers:
         - name: spinnaker
     dependencies:

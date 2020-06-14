@@ -34,6 +34,7 @@ public class SoftwareComponentYaml {
     private String label;
     private String type;
     private String context;
+    private String repository;
     private List<MaintainerYaml> maintainers;
     private List<ComponentDependencyYaml> dependencies;
 
@@ -42,6 +43,7 @@ public class SoftwareComponentYaml {
         this.label = null;
         this.type = null;
         this.context = null;
+        this.repository = null;
         this.maintainers = Collections.emptyList();
         this.dependencies = Collections.emptyList();
     }
@@ -89,6 +91,14 @@ public class SoftwareComponentYaml {
 
     public String getContext() {
         return context;
+    }
+
+    public void setRepository(String repository) {
+        this.repository = repository;
+    }
+
+    public String getRepository() {
+        return repository;
     }
 
     public List<MaintainerYaml> getMaintainers() {

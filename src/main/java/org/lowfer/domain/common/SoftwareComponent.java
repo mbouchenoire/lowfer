@@ -19,6 +19,8 @@
 
 package org.lowfer.domain.common;
 
+import org.lowfer.repository.AsyncComponentGitRepository;
+
 import javax.annotation.Nullable;
 import java.util.*;
 
@@ -32,6 +34,7 @@ public class SoftwareComponent {
     private final String label;
     private final SoftwareComponentType type;
     private final String context;
+    private final AsyncComponentGitRepository repository;
     private final Set<Maintainer> maintainers;
     private final Collection<ComponentDependency> dependencies;
 
@@ -40,6 +43,7 @@ public class SoftwareComponent {
         String label,
         SoftwareComponentType type,
         @Nullable String context,
+        @Nullable AsyncComponentGitRepository repository,
         Set<Maintainer> maintainers,
         Collection<ComponentDependency> dependencies) {
 
@@ -47,12 +51,13 @@ public class SoftwareComponent {
         this.label = label;
         this.type = type;
         this.context = context;
+        this.repository = repository;
         this.maintainers = maintainers;
         this.dependencies = Collections.unmodifiableCollection(dependencies);
     }
 
     static SoftwareComponent agg(long aggSize, @Nullable String context) {
-        return new SoftwareComponent(UUID.randomUUID().toString(), "+" + aggSize, AGGREGATE, context, emptySet(), emptySet());
+        return new SoftwareComponent(UUID.randomUUID().toString(), "+" + aggSize, AGGREGATE, context, null, emptySet(), emptySet());
     }
 
     public long weight() {
@@ -68,7 +73,7 @@ public class SoftwareComponent {
             .collect(toList())
             .contains(componentDependency.getComponentName()));
 
-        return new SoftwareComponent(name, label, type, context, maintainers, updatedDependencies);
+        return new SoftwareComponent(name, label, type, context, repository, maintainers, updatedDependencies);
     }
 
     SoftwareComponent addDependency(ComponentDependency dependency) {
@@ -81,7 +86,7 @@ public class SoftwareComponent {
 
         final Set<ComponentDependency> updatedDependencies = new HashSet<>(this.dependencies);
         updatedDependencies.addAll(dependencies);
-        return new SoftwareComponent(name, label, type, context, maintainers, updatedDependencies);
+        return new SoftwareComponent(name, label, type, context, repository, maintainers, updatedDependencies);
     }
 
     public String getName() {
@@ -98,6 +103,10 @@ public class SoftwareComponent {
 
     public Optional<String> getContext() {
         return Optional.ofNullable(context);
+    }
+
+    public Optional<AsyncComponentGitRepository> getRepository() {
+        return Optional.ofNullable(repository);
     }
 
     public Set<Maintainer> getMaintainers() {

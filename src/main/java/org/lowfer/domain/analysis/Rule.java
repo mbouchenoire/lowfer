@@ -33,6 +33,7 @@ public enum Rule {
     AVOID_QUEUE_MULTIPLE_PUBLISHERS("Avoid queue with multiple publishers", new AvoidQueueWithMultiplePublishersIssueFinder()),
     AVOID_TRANSITIVE_DEPENDENCIES("Avoid transitive dependencies", new AvoidTransitiveDependencyIssueFinder()),
     AVOID_UNSTABLE_LIBRARY("Avoid unstable libraries", new AvoidUnstableLibraryIssueFinder()),
+    AVOID_HAVING_SINGLE_DEVELOPER("Avoid having a single developer", new AvoidSingleDeveloperIssueFinder(80)),
     PREFER_LIBRARY_OVER_SERVICE("Prefer libraries over services", new PreferLibraryOverServiceIssueFinder(), false);
 
     // TODO: avoid service used by only one non-frontend component

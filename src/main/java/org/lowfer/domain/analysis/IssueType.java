@@ -23,6 +23,6 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 public enum IssueType {
     @JsonProperty MAINTENANCE,
-    @JsonProperty SCALING,
-    @JsonProperty SECURITY,
+    @JsonProperty LOADING,
+    @JsonProperty CONFIGURATION,
 }

@@ -25,6 +25,8 @@ import org.lowfer.domain.common.*;
 import org.lowfer.domain.error.ComponentMissingTypeException;
 import org.lowfer.domain.error.InvalidDependencyTypeException;
 import org.lowfer.domain.error.ManifestYamlException;
+import org.lowfer.repository.AsyncComponentGitRepository;
+import org.lowfer.repository.ComponentGitRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
@@ -36,6 +38,8 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.InputStream;
 import java.nio.file.Files;
+import java.nio.file.Path;
+import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -51,11 +55,12 @@ public class ManifestYamlParser implements ManifestSerializer, MasterManifestDes
 
     private static final Yaml YAML = new Yaml(new Constructor(SoftwareArchitectureYaml.class));
     private static final Yaml MASTER_YAML = new Yaml(new Constructor(Master.class));
+    private static final Path COMMON_PATH = Path.of(System.getProperty("java.io.tmpdir"), "lowfer");
 
     @Override
     public Try<SoftwareArchitecture> deserializeManifest(String manifest) {
         //noinspection unchecked
-        return Try.of(() -> (SoftwareArchitectureYaml)YAML.load(manifest))
+        return Try.of(() -> (SoftwareArchitectureYaml) YAML.load(manifest))
             .mapFailure(Case($(instanceOf(ScannerException.class)), ManifestYamlException::new))
             .flatMap(yaml -> load(yaml, false));
     }
@@ -133,12 +138,23 @@ public class ManifestYamlParser implements ManifestSerializer, MasterManifestDes
                     })
                     .collect(Collectors.toSet());
 
+                final AsyncComponentGitRepository repository = Optional.ofNullable(componentYaml.getRepository())
+                    .flatMap(repositoryUri -> getOrcreateComponentDirectory(componentYaml.getName())
+                        .map(path -> new ComponentGitRepository(componentYaml.getName(), repositoryUri, "", "", path))
+                        .map(Optional::of)
+                        .getOrElseGet(throwable -> {
+                            LOG.error("Failed to load Git repository of component: {}", componentYaml.getName(), throwable);
+                            return Optional.empty();
+                        }))
+                    .orElse(null);
+
                 return Try.sequence(dependencyTries)
                     .map(dependencies -> new SoftwareComponent(
                         componentYaml.getName(),
                         componentYaml.getLabel(),
                         SoftwareComponentType.fromSerializedName(componentYaml.getType()).orElseThrow(),
                         componentYaml.getContext(),
+                        repository,
                         maintainers,
                         dependencies.toJavaSet()));
             })
@@ -146,5 +162,19 @@ public class ManifestYamlParser implements ManifestSerializer, MasterManifestDes
 
         return Try.sequence(componentTries)
             .flatMap(components -> SoftwareArchitecture.of(architectureYaml.getName(), components.toJavaSet(), lazy));
+    }
+
+    private static Try<Path> getOrcreateComponentDirectory(String componentName) {
+        final Path componentDirectoryPath = COMMON_PATH.resolve(componentName);
+
+        return Try.of(() -> {
+            if (!Files.exists(componentDirectoryPath)) {
+                final Path directoryPath = Files.createDirectories(componentDirectoryPath);
+                LOG.info("Created directory ({}) for component: {}", directoryPath, componentName);
+                return directoryPath;
+            }
+
+            return componentDirectoryPath;
+        }).onFailure(throwable -> LOG.error("Failed to create directory for component '{}'", componentName, throwable));
     }
 }

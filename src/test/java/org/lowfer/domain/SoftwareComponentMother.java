@@ -50,6 +50,7 @@ public final class SoftwareComponentMother {
                 name,
                 type,
                 null,
+                null,
                 Collections.emptySet(),
                 dependencyNames.stream().map(ComponentDependency::new).collect(Collectors.toSet()));
     }
@@ -59,6 +60,7 @@ public final class SoftwareComponentMother {
                 name,
                 name,
                 type,
+                null,
                 null,
                 Collections.emptySet(),
                 dependencies);
@@ -73,6 +75,7 @@ public final class SoftwareComponentMother {
                 name,
                 name,
                 type,
+                null,
                 null,
                 Set.of(Maintainer.external(SemanticUIColor.GREY)),
                 dependencyNames.stream().map(ComponentDependency::new).collect(Collectors.toSet()));

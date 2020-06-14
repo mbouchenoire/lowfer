@@ -39,19 +39,19 @@ class ComponentNeighborsFilterTest {
     @Test
     void test() {
         final SoftwareComponent bdd1 = new SoftwareComponent(
-                "bdd1", "bdd1", DATABASE, null, emptySet(), emptySet());
+                "bdd1", "bdd1", DATABASE, null, null, emptySet(), emptySet());
 
         final SoftwareComponent back1 = new SoftwareComponent(
-                "back1", "back1", SERVICE, null, emptySet(), Set.of(new ComponentDependency(bdd1)));
+                "back1", "back1", SERVICE, null, null, emptySet(), Set.of(new ComponentDependency(bdd1)));
 
         final SoftwareComponent back2 = new SoftwareComponent(
-                "back2", "back2", SERVICE, null, emptySet(), Set.of(new ComponentDependency(back1, HTTP)));
+                "back2", "back2", SERVICE, null, null, emptySet(), Set.of(new ComponentDependency(back1, HTTP)));
 
         final SoftwareComponent back3 = new SoftwareComponent(
-                "back3", "back3", SERVICE, null, emptySet(), emptySet());
+                "back3", "back3", SERVICE, null, null, emptySet(), emptySet());
 
         final SoftwareComponent front1 = new SoftwareComponent(
-                "front1", "front1", FRONTEND, null, emptySet(), Set.of(new ComponentDependency(back2), new ComponentDependency(back3)));
+                "front1", "front1", FRONTEND, null, null, emptySet(), Set.of(new ComponentDependency(back2), new ComponentDependency(back3)));
 
         final SoftwareArchitecture architecture = new SoftwareArchitecture(UUID.randomUUID().toString(), Set.of(bdd1, back1, back2, back3, front1));
 
