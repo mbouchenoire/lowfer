@@ -5,3 +5,13 @@
 [![Docker Hub](https://img.shields.io/docker/pulls/mbouchenoire/lowfer.svg)](https://hub.docker.com/r/mbouchenoire/lowfer) &nbsp;
 
 Lowfer is a simple tool that helps software engineers and architects document, discuss & analyse software design and architecture.
+
+Try it yourself:
+
+```shell script
+docker run \
+    -e APPLICATION_ARCHITECTURES_REPOSITORY_URI=https://github.com/mbouchenoire/lowfer.git \
+    -e APPLICATION_ARCHITECTURES_REPOSITORY_BRANCH=0.1.0 \
+    -e APPLICATION_ARCHITECTURES_REPOSITORY_PATH=src/test/resources/architectures/demo \
+    mbouchenoire/lowfer:latest
+```
