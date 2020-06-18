@@ -25,8 +25,10 @@ import {
   selectors as graphSelectors
 } from '../graph/slice';
 import { architectureResourceApi, basePath } from '../../services/config';
+import { RoutePath } from '../../routes';
 
 function* downloadGraphviz() {
+  if (window.location.pathname !== RoutePath.DRAFT) return;
   const encodedArchitecture = yield select(
     selectors.getCurrentEncodedArchitecture
   );

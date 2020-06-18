@@ -111,7 +111,7 @@ const getActiveIssue = (state: RootState) => state.issues.activeIssue;
 const createGetBySeverity = (severity: IssueViewSeverityEnum) =>
   createSelector<RootState, IssueType[], IssueType[]>(
     [get],
-    filter((issue) => issue.severity === severity)
+    filter((issue: IssueType) => issue.severity === severity)
   );
 
 const getCriticals = createGetBySeverity(IssueViewSeverityEnum.CRITICAL);
