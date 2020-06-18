@@ -19,8 +19,6 @@
 
 .Header .ui.menu {
   .Header-name {
-
-
     .dropdown.icon {
       font-size: 1.5rem;
     }
@@ -28,6 +26,15 @@
     .menu {
       margin-top: 1em;
       width: 100%;
+
+      > .Architecture-draftItem.item {
+        display: flex;
+        justify-content: space-between;
+
+        > .icon:not(.dropdown) {
+          margin: 0 !important;
+        }
+      }
     }
   }
 

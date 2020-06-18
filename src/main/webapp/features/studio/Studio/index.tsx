@@ -35,22 +35,20 @@ const Studio = () => {
 
   useEffect(() => {
     dispatch(filtersActions.resetFilters());
-  }, []);
+  }, [dispatch]);
 
   const currentStudioIndex = useSelector(selectors.getCurrentIndex);
 
   const error = useSelector(selectors.getError);
 
-  console.log({ currentStudioIndex });
-
   if (isNil(currentStudioIndex)) {
     return (
       <Message
         className="NoDraft"
+        content="Please select a draft"
+        header="No draft selected"
         icon="info"
         info
-        header="No draft selected"
-        content="Please select a draft"
       />
     );
   }

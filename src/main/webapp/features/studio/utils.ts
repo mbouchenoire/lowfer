@@ -48,5 +48,9 @@ export const getStudioKeyFromRaw = (raw: string): string | undefined => {
   const nameGroups = studioKeyRegex.exec(raw);
   if (nameGroups === null) return;
   return nameGroups[1];
-  return;
 };
+
+export const createNewDraft = (index: number): StudioDraft => ({
+  key: `Draft ${index}`,
+  raw: `name: Draft ${index}`
+});
