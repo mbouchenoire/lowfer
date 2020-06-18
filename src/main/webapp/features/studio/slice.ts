@@ -17,15 +17,15 @@
  * limitations under the License.
  */
 
-import { createSlice, PayloadAction, createSelector } from '@reduxjs/toolkit';
-import { equals, isNil } from 'ramda';
+import { createSelector, createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { equals, isNil, remove } from 'ramda';
 
 import { RootState } from '../../store';
 import {
+  createNewDraft,
   getStateToLocalStorage,
-  saveStateToLocalStorage,
   getStudioKeyFromRaw,
-  createNewDraft
+  saveStateToLocalStorage
 } from './utils';
 
 import { selectors as appSelectors } from '../app/slice';
@@ -75,13 +75,15 @@ export const slice = createSlice({
     setIndex: (state, action: PayloadAction<number | null>) => {
       state.currentIndex = action.payload;
       if (state.currentIndex === null) return;
-      state.drafts[state.currentIndex].dot = '';
+      if (state.drafts[state.currentIndex])
+        state.drafts[state.currentIndex].dot = '';
       state.error = null;
     },
     setDot: (state, action: PayloadAction<string>) => {
       if (state.currentIndex === null) return;
       state.status = StudioStatus.IDLE;
-      state.drafts[state.currentIndex].dot = action.payload;
+      if (state.drafts[state.currentIndex])
+        state.drafts[state.currentIndex].dot = action.payload;
       state.error = null;
     },
     setError: (state, action: PayloadAction<string>) => {
@@ -92,6 +94,7 @@ export const slice = createSlice({
     setRaw: (state, action: PayloadAction<string>) => {
       if (state.currentIndex === null) return;
       state.status = StudioStatus.FETCHING;
+      if (!state.drafts[state.currentIndex]) return;
       state.drafts[state.currentIndex].raw = action.payload;
       const currentDraftKey = getStudioKeyFromRaw(action.payload);
       if (currentDraftKey) {
@@ -101,7 +104,8 @@ export const slice = createSlice({
       state.error = null;
     },
     setName: (state, action: PayloadAction<string>) => {
-      if (state.currentIndex === null) return;
+      if (isNil(state.currentIndex) || isNil(state.drafts[state.currentIndex]))
+        return;
       state.drafts[state.currentIndex].key = action.payload;
       saveStateToLocalStorage(state.drafts);
     },
@@ -109,6 +113,10 @@ export const slice = createSlice({
       const index = state.drafts.length;
       state.drafts = state.drafts.concat(createNewDraft(index + 1));
       state.currentIndex = index;
+    },
+    removeDraft: (state, action: PayloadAction<number>) => {
+      const index = action.payload;
+      state.drafts = remove(index, 1, state.drafts);
     }
   }
 });
@@ -129,12 +137,15 @@ const getCurrentIndex = (state: RootState) => state.studio.currentIndex;
 const getCurrentDot = createSelector(
   [getDrafts, getCurrentIndex],
   (drafts: StudioDraft[], currentIndex: number | null) =>
-    currentIndex !== null ? drafts[currentIndex].dot : null
+    !isNil(currentIndex) && !isNil(drafts[currentIndex])
+      ? drafts[currentIndex].dot
+      : null
 );
 
 const getCurrentRaw = createSelector(
   [getDrafts, getCurrentIndex],
-  (drafts, current) => (isNil(current) ? '' : drafts[current].raw)
+  (drafts, current) =>
+    isNil(current) || isNil(drafts[current]) ? '' : drafts[current].raw
 );
 
 const getCurrentEncodedArchitecture = createSelector(
@@ -147,7 +158,7 @@ const getCurrentName = createSelector(
   [getDrafts, getCurrentIndex, appSelectors.getIsVersionnedArchitecture],
   (drafts, index, isVersionnedArchitecture) => {
     if (isVersionnedArchitecture) return;
-    return isNil(index) ? '' : drafts[index].key;
+    return isNil(index) || isNil(drafts[index]) ? '' : drafts[index].key;
   }
 );
 

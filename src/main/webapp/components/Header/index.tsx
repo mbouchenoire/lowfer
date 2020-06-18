@@ -47,11 +47,11 @@ import {
   selectors as appSelectors
 } from '../../features/app/slice';
 
+import { ArchitectureSource } from '../../features/app/types';
 import { RoutePath, studio, overview, issues } from '../../routes';
 import sharingActions from '../../features/sharing/actions';
 
 import './style.scss';
-import { ArchitectureSource } from '../../features/app/types';
 
 enum Prefix {
   ARCHITECTURE = 'architecture_',
@@ -137,6 +137,13 @@ const Header = () => {
     history.push(RoutePath.DRAFT);
   }, [dispatch, history]);
 
+  const createRemoveDraft = useCallback(
+    (index: number) => () => {
+      dispatch(studioActions.removeDraft(index));
+    },
+    [dispatch]
+  );
+
   const share = useCallback(() => {
     dispatch(sharingActions.share);
     setJustShared(true);
@@ -165,11 +172,20 @@ const Header = () => {
 
   const draftDropdownItems = drafts.map(({ key = '' }, index: number) => (
     <Dropdown.Item
+      className="Architecture-draftItem"
       key={`${Prefix.DRAFT}${index}`}
-      value={`${Prefix.DRAFT}${index}`}
-      text={key}
       onClick={onSelection}
-    />
+      value={`${Prefix.DRAFT}${index}`}
+    >
+      {key}
+      <Icon
+        className="Architecture-deleteDraft"
+        color="red"
+        name="remove"
+        onClick={createRemoveDraft(index)}
+        size="mini"
+      />
+    </Dropdown.Item>
   ));
 
   const trigger = (
@@ -193,7 +209,6 @@ const Header = () => {
           <Dropdown.Menu>
             <Dropdown.Header icon="lab" content=" local storage" />
             {draftDropdownItems}
-            <Dropdown.Divider />
             <Dropdown.Item
               icon="plus"
               key="add-draft"
