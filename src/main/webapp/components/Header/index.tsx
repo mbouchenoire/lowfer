@@ -19,10 +19,10 @@
 
 import React, {
   SyntheticEvent,
-  useState,
   useCallback,
   useEffect,
-  useMemo
+  useMemo,
+  useState
 } from 'react';
 import { Dropdown, Menu, Icon, Label } from 'semantic-ui-react';
 import { SemanticCOLORS } from 'semantic-ui-react/dist/commonjs/generic';
@@ -42,7 +42,11 @@ import {
   actions as issuesActions,
   selectors as issuesSelectors
 } from '../../features/issues/slice';
-import { selectors as appSelectors } from '../../features/app/slice';
+import {
+  actions as appActions,
+  selectors as appSelectors
+} from '../../features/app/slice';
+
 import { RoutePath, studio, overview, issues } from '../../routes';
 import sharingActions from '../../features/sharing/actions';
 
@@ -108,19 +112,30 @@ const Header = () => {
   const isArchitectureVersioned = (val: string | undefined) =>
     val?.startsWith(Prefix.ARCHITECTURE);
 
-  const onSelection = (e: SyntheticEvent<HTMLElement, Event>, data: any) => {
-    const val = String(data.value);
-    if (isArchitectureVersioned(val)) {
-      dispatch(
-        architecturesActions.setIndex(Number(val.split(Prefix.ARCHITECTURE)[1]))
-      );
-      history.push(RoutePath.OVERVIEW);
-    }
-    if (isArchitectureLocalStorage(val)) {
-      dispatch(studioActions.setIndex(Number(val.split(Prefix.DRAFT)[1])));
-      history.push(RoutePath.DRAFT);
-    }
-  };
+  const onSelection = useCallback(
+    (e: SyntheticEvent<HTMLElement, Event>, data: any) => {
+      const val = String(data.value);
+      if (isArchitectureVersioned(val)) {
+        dispatch(
+          architecturesActions.setIndex(
+            Number(val.split(Prefix.ARCHITECTURE)[1])
+          )
+        );
+        history.push(RoutePath.OVERVIEW);
+      }
+      if (isArchitectureLocalStorage(val)) {
+        dispatch(studioActions.setIndex(Number(val.split(Prefix.DRAFT)[1])));
+        history.push(RoutePath.DRAFT);
+      }
+    },
+    [dispatch, history]
+  );
+
+  const addDraft = useCallback(() => {
+    dispatch(studioActions.addDraft());
+    dispatch(appActions.setSource(ArchitectureSource.LOCAL));
+    history.push(RoutePath.DRAFT);
+  }, [dispatch, history]);
 
   const share = useCallback(() => {
     dispatch(sharingActions.share);
@@ -179,6 +194,13 @@ const Header = () => {
             <Dropdown.Header icon="lab" content=" local storage" />
             {draftDropdownItems}
             <Dropdown.Divider />
+            <Dropdown.Item
+              icon="plus"
+              key="add-draft"
+              onClick={addDraft}
+              text="Add draft"
+            />
+            <Dropdown.Divider />
             <Dropdown.Header icon="fork" content=" Versioned" />
             {staticDropdownItems}
           </Dropdown.Menu>
@@ -206,9 +228,9 @@ const Header = () => {
               count === 0 ? null : (
                 <Label
                   circular
+                  className="Issue-labels"
                   color={issueColor[type]}
                   key={type}
-                  className="Issue-labels"
                 >
                   {count}
                 </Label>

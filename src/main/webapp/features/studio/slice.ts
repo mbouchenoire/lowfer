@@ -24,7 +24,8 @@ import { RootState } from '../../store';
 import {
   getStateToLocalStorage,
   saveStateToLocalStorage,
-  getStudioKeyFromRaw
+  getStudioKeyFromRaw,
+  createNewDraft
 } from './utils';
 
 import { selectors as appSelectors } from '../app/slice';
@@ -103,6 +104,11 @@ export const slice = createSlice({
       if (state.currentIndex === null) return;
       state.drafts[state.currentIndex].key = action.payload;
       saveStateToLocalStorage(state.drafts);
+    },
+    addDraft: (state) => {
+      const index = state.drafts.length;
+      state.drafts = state.drafts.concat(createNewDraft(index + 1));
+      state.currentIndex = index;
     }
   }
 });
