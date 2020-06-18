@@ -63,7 +63,7 @@ public final class GraphOptions {
     public static class Builder {
 
         private Rank.RankDir rankDir = Rank.RankDir.TOP_TO_BOTTOM;
-        private String fontName = "Helvetica";
+        private String fontName = "Lato";
         private int fontSize = 11;
         private boolean hideAggregates = false;
         private GraphType graphType = GraphType.DEPENDENCIES;

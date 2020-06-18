@@ -30,7 +30,7 @@ public interface GraphvizStyle {
 
     default String defaultFontFamily() {
         //noinspection SpellCheckingInspection
-        return "Lato,Helvetica Neue,Arial,Helvetica,sans-serif;";
+        return "Lato";
     }
 
     default String defaultFontColor() {

@@ -49,7 +49,7 @@ function* renderGraph(action: PayloadAction<string | undefined>) {
   yield put(actions.setCoarsedContent(''));
   const { payload: dot } = action;
   if (!dot) return;
-  const graphDom = document.getElementById('#graph');
+  const graphDom = document.getElementById('graph');
   if (!graphDom) return;
   const d3Elm = window.d3.select(graphDom);
   if (!d3Elm) return;

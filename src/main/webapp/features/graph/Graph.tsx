@@ -26,6 +26,7 @@ import { actions, selectors } from './slice';
 
 import './styles.scss';
 import Settings from './Settings';
+import Save from './Save';
 
 type Props = {
   dot?: string;
@@ -41,7 +42,7 @@ const Graph = ({ dot, isFetching }: Props) => {
   useEffect(() => {
     if (!dot || dot === '') return;
     dispatch(actions.renderGraph(dot));
-  }, [dot]);
+  }, [dispatch, dot]);
 
   return (
     <div className={classnames('Graph', { coarsed })}>
@@ -51,7 +52,7 @@ const Graph = ({ dot, isFetching }: Props) => {
           hidden: isFetching || !graphRendered,
           coarsed
         })}
-        id="#graph"
+        id="graph"
       />
       <Loader active={!graphRendered || isFetching} size="huge" />
       {coarsedContent !== '' && (
@@ -60,6 +61,7 @@ const Graph = ({ dot, isFetching }: Props) => {
           dangerouslySetInnerHTML={{ __html: coarsedContent }}
         />
       )}
+      <Save />
     </div>
   );
 };

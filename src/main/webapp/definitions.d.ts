@@ -18,3 +18,5 @@
  */
 
 declare module 'mdx.macro';
+
+declare module 'save-svg-as-png';
