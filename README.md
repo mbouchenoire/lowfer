@@ -6,12 +6,13 @@
 
 Lowfer is a simple tool that helps software engineers and architects document, discuss & analyse software design and architecture.
 
-Try it yourself:
+You can use Lowfer locally in your browser at http://localhost:8080 using Docker only:
 
 ```shell script
 docker run \
     -e APPLICATION_ARCHITECTURES_REPOSITORY_URI=https://github.com/mbouchenoire/lowfer.git \
     -e APPLICATION_ARCHITECTURES_REPOSITORY_BRANCH=0.1.0 \
     -e APPLICATION_ARCHITECTURES_REPOSITORY_PATH=src/test/resources/architectures/demo \
+    -p 8080:8080
     mbouchenoire/lowfer:latest
 ```
