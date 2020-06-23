@@ -39,10 +39,10 @@ apply from: "gradle/docker.gradle"
 apply from: "gradle/sonar.gradle"
 //jhipster-needle-gradle-apply-from - JHipster will add additional gradle scripts to be applied here
 
-if (project.hasProperty("prod")) {
-    apply from: "gradle/profile_prod.gradle"
-} else {
+if (project.hasProperty("dev")) {
     apply from: "gradle/profile_dev.gradle"
+} else {
+    apply from: "gradle/profile_prod.gradle"
 }
 
 if (project.hasProperty("war")) {

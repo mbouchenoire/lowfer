@@ -29,6 +29,7 @@
   }
 
   .Settings {
+    padding: 0.2rem;
     position: absolute;
     right: 1rem;
     top: 1rem;
@@ -89,4 +90,14 @@
 
 .Graph-coarsed {
   pointer-events: none;
+}
+
+.Graph-save {
+  background-color: rgba(249, 249, 249, 0.8);
+  border-top-left-radius: 10px;
+  bottom: 0;
+  cursor: pointer;
+  padding: 0.2rem;
+  position: absolute;
+  right: 0;
 }

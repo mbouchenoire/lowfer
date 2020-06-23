@@ -29,8 +29,12 @@ bootRun {
     args = []
 }
 
+task looseInstall(type: NpmTask) {
+    args = ["install"]
+}
+
 task buildFront(type: NpmTask) {
-    dependsOn npmInstall
+    dependsOn looseInstall
     args = ["run", "build:dev"]
 }
 

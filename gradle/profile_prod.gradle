@@ -18,8 +18,12 @@ bootRun {
     args = []
 }
 
+task strictInstall(type: NpmTask) {
+    args = ["ci"]
+}
+
 task buildFront(type: NpmTask) {
-    dependsOn npmInstall
+    dependsOn strictInstall
     args = ["run", "build"]
 }
 
