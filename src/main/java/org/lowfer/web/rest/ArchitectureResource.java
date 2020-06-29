@@ -30,6 +30,7 @@ import org.lowfer.graphviz.*;
 import org.lowfer.service.ArchitectureService;
 import org.lowfer.web.rest.vm.*;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -43,6 +44,7 @@ import static java.util.stream.Collectors.collectingAndThen;
 import static java.util.stream.Collectors.toList;
 
 @RestController
+@CrossOrigin
 public class ArchitectureResource {
 
     private final ArchitectureService architectureService;
