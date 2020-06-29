@@ -27,6 +27,7 @@ import {
   getStudioKeyFromRaw,
   saveStateToLocalStorage
 } from './utils';
+import { ComponentTypeListItemView } from '../../services/api';
 
 import { selectors as appSelectors } from '../app/slice';
 
@@ -43,6 +44,7 @@ export interface StudioDraft {
 }
 
 interface StudioState {
+  componentTypes: ComponentTypeListItemView[];
   currentIndex: number | null;
   drafts: StudioDraft[];
   error: string | null;
@@ -62,6 +64,7 @@ if (encodedArchitecture) {
 }
 
 const initialState: StudioState = {
+  componentTypes: [],
   currentIndex,
   drafts,
   error: null,
@@ -117,6 +120,15 @@ export const slice = createSlice({
     removeDraft: (state, action: PayloadAction<number>) => {
       const index = action.payload;
       state.drafts = remove(index, 1, state.drafts);
+    },
+    getComponentTypes: (state) => {
+      state.componentTypes = [];
+    },
+    setComponentTypes: (
+      state,
+      action: PayloadAction<ComponentTypeListItemView[]>
+    ) => {
+      state.componentTypes = action.payload;
     }
   }
 });

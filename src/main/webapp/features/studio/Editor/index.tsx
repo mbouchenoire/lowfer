@@ -18,19 +18,21 @@
  */
 
 import React, { useState, useEffect } from 'react';
-import AceEditor from 'react-ace';
 import { useDebounce } from 'react-use';
 import { useSelector, useDispatch } from 'react-redux';
-import 'ace-builds/src-noconflict/theme-chrome';
+import MonacoEditor from '@uiw/react-monacoeditor';
 
 import { actions, selectors } from '../slice';
-import './options';
 
 const Editor = () => {
   const dispatch = useDispatch();
   const raw = useSelector(selectors.getCurrentRaw);
 
   const [value, setValue] = useState(raw);
+
+  useEffect(() => {
+    dispatch(actions.getComponentTypes());
+  }, [dispatch]);
 
   useEffect(() => {
     setValue(raw);
@@ -45,18 +47,14 @@ const Editor = () => {
   );
 
   return (
-    <AceEditor
-      className="Editor"
-      editorProps={{ $blockScrolling: true }}
-      enableBasicAutocompletion
-      enableLiveAutocompletion
-      enableSnippets
-      height="100%"
-      mode="yaml"
-      name="studio"
+    <MonacoEditor
+      language="yaml"
       onChange={setValue}
-      theme="chrome"
       value={value}
+      width="500px"
+      options={{
+        quickSuggestions: true
+      }}
     />
   );
 };
