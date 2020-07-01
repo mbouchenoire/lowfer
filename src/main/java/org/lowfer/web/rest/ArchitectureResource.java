@@ -25,27 +25,32 @@ import guru.nidi.graphviz.engine.Graphviz;
 import org.lowfer.domain.common.ArchitectureTransformer;
 import org.lowfer.domain.common.ComponentFilters;
 import org.lowfer.domain.common.SoftwareArchitecture;
+import org.lowfer.domain.common.SoftwareComponentType;
 import org.lowfer.domain.error.ArchitectureTooBigToRenderException;
 import org.lowfer.graphviz.*;
 import org.lowfer.service.ArchitectureService;
 import org.lowfer.web.rest.vm.*;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
 
 import static io.vavr.control.Try.failure;
 import static io.vavr.control.Try.success;
-import static java.util.stream.Collectors.collectingAndThen;
-import static java.util.stream.Collectors.toList;
+import static java.util.stream.Collectors.*;
 
 @RestController
 @CrossOrigin
 public class ArchitectureResource {
+
+    private static final Logger LOG = LoggerFactory.getLogger(ArchitectureResource.class);
 
     private final ArchitectureService architectureService;
     private final ArchitectureTransformer architectureTransformer;
@@ -117,12 +122,19 @@ public class ArchitectureResource {
         @RequestParam(name = "component-type", required = false, defaultValue = "") String typeFilter,
         @RequestParam(name = "maintainer", required = false, defaultValue = "") String maintainerFilter) {
 
-        return architectureService.load(architectureName, architectureEncoded)
+        final List<SoftwareComponentType> componentTypes = architectureService.load(architectureName, architectureEncoded)
             .map(architecture -> filter(architecture, nameFilter, typeFilter, maintainerFilter))
             .map(SoftwareArchitecture::getComponentTypes)
-            .map(componentTypes -> componentTypes.stream().map(ComponentTypeListItemView::new).collect(toList()))
-            .map(ComponentTypeListView::new)
-            .get();
+            .getOrElseGet(throwable -> {
+                LOG.debug("Could not load architecture, returning all component types");
+                return Arrays.asList(SoftwareComponentType.values());
+            });
+
+        final List<ComponentTypeListItemView> views = componentTypes.stream()
+            .map(ComponentTypeListItemView::new)
+            .collect(toUnmodifiableList());
+
+        return new ComponentTypeListView(views);
     }
 
     private SoftwareArchitecture filter(

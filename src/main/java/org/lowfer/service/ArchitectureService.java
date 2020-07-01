@@ -70,7 +70,7 @@ public class ArchitectureService {
 
     public Try<SoftwareArchitecture> load(String name, String encoded) {
         if (isNotBlank(name) && isNotBlank(encoded))
-            throw new IllegalArgumentException("Cannot load architecture when given both name and encoded representation");
+            return Try.failure(new IllegalArgumentException("Cannot load architecture when given both name and encoded representation"));
 
         if (isNotBlank(name)) {
             LOG.debug("Finding architecture with name='{}'...", name);
@@ -84,7 +84,7 @@ public class ArchitectureService {
             return manifestSerializer.deserializeManifest(manifestEncoder.decode(encoded));
         }
 
-        throw new IllegalArgumentException("Cannot load architecture without name or encoded representation");
+        return Try.failure(new IllegalArgumentException("Cannot load architecture without name or encoded representation"));
     }
 
     public List<IssueView> findIssues(SoftwareArchitecture architecture, SoftwareComponentFilter filter) {
