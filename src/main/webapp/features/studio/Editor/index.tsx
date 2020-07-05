@@ -23,6 +23,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import MonacoEditor from '@uiw/react-monacoeditor';
 
 import { actions, selectors } from '../slice';
+import './editorOptions';
 
 const Editor = () => {
   const dispatch = useDispatch();
@@ -52,8 +53,19 @@ const Editor = () => {
       onChange={setValue}
       value={value}
       width="500px"
+      theme="lowfer"
       options={{
-        quickSuggestions: true
+        quickSuggestions: false,
+        minimap: {
+          enabled: false
+        },
+        overviewRulerLanes: 0,
+        hideCursorInOverviewRuler: true,
+        scrollBeyondLastLine: false,
+        scrollbar: {
+          vertical: 'hidden',
+          horizontal: 'hidden'
+        }
       }}
     />
   );
