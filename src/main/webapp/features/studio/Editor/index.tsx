@@ -55,7 +55,8 @@ const Editor = () => {
       width="500px"
       theme="lowfer"
       options={{
-        quickSuggestions: false,
+        formatOnType: true,
+        quickSuggestions: true,
         minimap: {
           enabled: false
         },

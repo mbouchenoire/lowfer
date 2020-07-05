@@ -59,20 +59,9 @@ function* downloadGraphviz() {
   }
 }
 
-function* getComponentTypes() {
-  const request = architectureResourceApi.getComponentTypesUsingGET();
-  try {
-    const data = yield call(request);
-    console.log({ data });
-  } catch (err) {
-    console.log({ err });
-  }
-}
-
 export default function* root() {
   yield all([
     takeLatest(actions.setRaw, downloadGraphviz),
-    takeLatest(actions.getComponentTypes, getComponentTypes),
     takeLatest(graphActions.setType, downloadGraphviz),
     takeLatest(graphActions.setDirection, downloadGraphviz),
     takeLatest(graphActions.toggleHideAggregates, downloadGraphviz),
