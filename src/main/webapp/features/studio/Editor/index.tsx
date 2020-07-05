@@ -32,10 +32,6 @@ const Editor = () => {
   const [value, setValue] = useState(raw);
 
   useEffect(() => {
-    dispatch(actions.getComponentTypes());
-  }, [dispatch]);
-
-  useEffect(() => {
     setValue(raw);
   }, [setValue, raw]);
 

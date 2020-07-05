@@ -21,6 +21,7 @@ import { all, call, put, select, takeLatest } from 'redux-saga/effects';
 
 import { actions } from './slice';
 import { actions as appActions } from '../app/slice';
+import { actions as studioActions } from '../studio/slice';
 import { selectors as studioSelectors } from '../studio/slice';
 
 import { architectureResourceApi, basePath } from '../../services/config';
@@ -131,6 +132,7 @@ function* refresh() {
 export default function* root() {
   yield all([
     takeLatest(actions.getInitial, getInitial),
+    takeLatest(studioActions.setRaw, getInitial),
     takeLatest(appActions.setSource, refresh)
   ]);
 }

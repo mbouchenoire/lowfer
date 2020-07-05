@@ -1,6 +1,8 @@
 import * as monaco from 'monaco-editor';
 
 import { architectureResourceApi } from '../../../services/config';
+import { selectors as filtersSelectors } from '../../filters/slice';
+import { store } from '../../../store';
 
 monaco.editor.defineTheme('lowfer', {
   base: 'vs', // can also be vs-dark or hc-black
@@ -23,8 +25,20 @@ const createComponentTypesProposals = async (range: any) => {
   }));
 };
 
+const createComponentNamesProposals = (range: any) => {
+  const components = filtersSelectors.getComponents(store.getState());
+  return components?.map((component) => ({
+    label: component.name,
+    kind: monaco.languages.CompletionItemKind.Function,
+    documentation: component.name,
+    insertText: component.name,
+    range
+  }));
+};
+
 monaco.languages.registerCompletionItemProvider('yaml', {
   triggerCharacters: [':', ' '],
+  // @ts-ignore
   provideCompletionItems: (model, position) => {
     const textUntilPosition = model.getValueInRange({
       startLineNumber: position.lineNumber,
@@ -32,10 +46,6 @@ monaco.languages.registerCompletionItemProvider('yaml', {
       endLineNumber: position.lineNumber,
       endColumn: position.column
     });
-    const match = textUntilPosition.match(/type:/);
-    if (!match) {
-      return { suggestions: [] };
-    }
     const word = model.getWordUntilPosition(position);
     const range = {
       startLineNumber: position.lineNumber,
@@ -43,6 +53,17 @@ monaco.languages.registerCompletionItemProvider('yaml', {
       startColumn: word.startColumn,
       endColumn: word.endColumn
     };
+    const namesMatch = textUntilPosition.match(/component:/);
+    if (namesMatch) {
+      return {
+        suggestions: createComponentNamesProposals(range)
+      };
+    }
+    const typesMatch = textUntilPosition.match(/type:/);
+    if (!typesMatch) {
+      return { suggestions: [] };
+    }
+
     return new Promise((resolve) => {
       createComponentTypesProposals(range).then((suggestions) => {
         resolve({
