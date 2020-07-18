@@ -5,11 +5,11 @@ import io.vavr.concurrent.Future;
 import org.eclipse.jgit.api.Git;
 import org.eclipse.jgit.lib.ObjectId;
 import org.eclipse.jgit.revwalk.RevCommit;
-import org.eclipse.jgit.transport.UsernamePasswordCredentialsProvider;
 import org.lowfer.domain.common.Commit;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import javax.annotation.Nullable;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Collections;
@@ -22,12 +22,16 @@ public final class ComponentGitRepository implements AsyncComponentGitRepository
     private static final Logger LOG = LoggerFactory.getLogger(ComponentGitRepository.class);
 
     private final String componentName;
-    private final Path directory;
     private final Future<Git> gitFuture;
 
-    public ComponentGitRepository(String componentName, String uri, String username, String password, Path componentDirectory) {
+    public ComponentGitRepository(
+        String componentName,
+        String uri,
+        @Nullable String branch,
+        GitHostConfig hostConfig,
+        Path componentDirectory) {
+
         this.componentName = componentName;
-        this.directory = componentDirectory;
 
         final Path gitConfigDirectory = componentDirectory.resolve(".git");
 
@@ -37,11 +41,10 @@ public final class ComponentGitRepository implements AsyncComponentGitRepository
         } else {
             LOG.info("Cloning git repository: {}...", uri);
 
-            this.gitFuture = Future.of(() -> Git.cloneRepository()
-                .setURI(uri)
-                .setDirectory(componentDirectory.toFile())
-                .setCredentialsProvider(new UsernamePasswordCredentialsProvider(username, password))
-                .call())
+            final GitPullConfig pullConfig = new GitPullConfig(uri, branch, hostConfig, componentDirectory.toFile());
+            final Future<Git> future = Future.of(() -> GitUtils.pull(pullConfig));
+
+            this.gitFuture = future
                 .andThen(repository -> LOG.info("Cloned git repository: {}", uri))
                 .onFailure(throwable -> LOG.error("Failed to clone git repository: {}", uri, throwable));
 

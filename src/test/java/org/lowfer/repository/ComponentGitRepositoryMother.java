@@ -11,12 +11,11 @@ public final class ComponentGitRepositoryMother {
 
     public static AsyncComponentGitRepository helloWorld() {
         final Path temp = Files.newTemporaryFolder().toPath();
-
         return new ComponentGitRepository(
             "HelloWorld",
             "https://github.com/octocat/Hello-World.git",
-            "",
-            "",
+            "master",
+            GitHostConfig.defaultConfig(),
             temp);
     }
 }

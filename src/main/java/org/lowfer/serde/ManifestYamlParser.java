@@ -26,7 +26,7 @@ import org.lowfer.domain.error.ComponentMissingTypeException;
 import org.lowfer.domain.error.InvalidDependencyTypeException;
 import org.lowfer.domain.error.ManifestYamlException;
 import org.lowfer.repository.AsyncComponentGitRepository;
-import org.lowfer.repository.ComponentGitRepository;
+import org.lowfer.repository.ComponentGitRepositoryFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
@@ -56,6 +56,12 @@ public class ManifestYamlParser implements ManifestSerializer, MasterManifestDes
     private static final Yaml YAML = new Yaml(new Constructor(SoftwareArchitectureYaml.class));
     private static final Yaml MASTER_YAML = new Yaml(new Constructor(Master.class));
     private static final Path COMMON_PATH = Path.of(System.getProperty("java.io.tmpdir"), "lowfer");
+
+    private final ComponentGitRepositoryFactory componentGitRepositoryFactory;
+
+    public ManifestYamlParser(ComponentGitRepositoryFactory componentGitRepositoryFactory) {
+        this.componentGitRepositoryFactory = componentGitRepositoryFactory;
+    }
 
     @Override
     public Try<SoftwareArchitecture> deserializeManifest(String manifest) {
@@ -103,14 +109,14 @@ public class ManifestYamlParser implements ManifestSerializer, MasterManifestDes
         });
     }
 
-    private static Try<SoftwareArchitecture> parseFile(File file) {
+    private Try<SoftwareArchitecture> parseFile(File file) {
         LOG.debug("Parsing manifest file: {}...", file);
         return Try.of(() -> new FileInputStream(file))
             .map(fileInputStream -> (SoftwareArchitectureYaml) YAML.load(fileInputStream))
             .flatMap(yaml -> load(yaml, true));
     }
 
-    private static Try<SoftwareArchitecture> load(SoftwareArchitectureYaml architectureYaml, boolean lazy) {
+    private Try<SoftwareArchitecture> load(SoftwareArchitectureYaml architectureYaml, boolean lazy) {
         LOG.debug("Loading architecture from yaml representation (name: {})...", architectureYaml.getName());
 
         final Set<Try<SoftwareComponent>> componentTries = architectureYaml.getComponents().stream()
@@ -140,7 +146,7 @@ public class ManifestYamlParser implements ManifestSerializer, MasterManifestDes
 
                 final AsyncComponentGitRepository repository = Optional.ofNullable(componentYaml.getRepository())
                     .flatMap(repositoryUri -> getOrcreateComponentDirectory(componentYaml.getName())
-                        .map(path -> new ComponentGitRepository(componentYaml.getName(), repositoryUri, "", "", path))
+                        .map(path -> componentGitRepositoryFactory.create(componentYaml.getName(), repositoryUri, null, path))
                         .map(Optional::of)
                         .getOrElseGet(throwable -> {
                             LOG.error("Failed to load Git repository of component: {}", componentYaml.getName(), throwable);

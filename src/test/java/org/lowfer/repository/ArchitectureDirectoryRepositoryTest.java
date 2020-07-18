@@ -23,14 +23,18 @@ import org.junit.jupiter.api.Test;
 import org.lowfer.domain.common.SoftwareArchitecture;
 import org.lowfer.serde.ManifestYamlParser;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class ArchitectureDirectoryRepositoryTest {
 
     @Test
     public void testFindArchitectureByName() {
+        final ComponentGitRepositoryFactory componentGitRepositoryFactory =
+            new ComponentGitRepositoryFactory(GitHostConfigRepository.defaultConfig());
+
         final ArchitectureDirectoryRepository repository = new ArchitectureDirectoryRepository(
-            "src/test/resources/architectures/sample", new ManifestYamlParser());
+            "src/test/resources/architectures/sample",
+            new ManifestYamlParser(componentGitRepositoryFactory));
 
         final SoftwareArchitecture sample = repository.findByName("sample").orElseThrow();
 

@@ -33,7 +33,7 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 @Repository
-@ConditionalOnProperty(prefix = "application.architectures.", value = "directory")
+@ConditionalOnProperty(prefix = "architectures.", value = "directory")
 @ConditionalOnMissingBean(ArchitectureGitRepository.class)
 public class ArchitectureDirectoryRepository implements ArchitectureRepository {
 
@@ -42,7 +42,7 @@ public class ArchitectureDirectoryRepository implements ArchitectureRepository {
     private final Map<String, SoftwareArchitecture> architectures;
 
     public ArchitectureDirectoryRepository(
-        @Value("${application.architectures.directory}") String architecturesDirectoryPath,
+        @Value("${architectures.directory}") String architecturesDirectoryPath,
         MasterManifestDeserializer masterManifestDeserializer) {
 
         final File architecturesDirectory = new File(architecturesDirectoryPath);

@@ -82,6 +82,5 @@ jhipster:
 # https://www.jhipster.tech/common-application-properties/
 # ===================================================================
 
-application:
-  architectures:
-    directory: src/test/resources/architectures/demo
+architectures:
+  directory: src/test/resources/architectures/demo

@@ -22,15 +22,18 @@ package org.lowfer.serde;
 import io.vavr.control.Try;
 import org.junit.jupiter.api.Test;
 import org.lowfer.domain.common.SoftwareArchitecture;
+import org.lowfer.repository.ComponentGitRepositoryFactory;
+import org.lowfer.repository.GitHostConfigRepository;
 
 import java.io.File;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class ManifestYamlParserTest {
 
     static Try<SoftwareArchitecture> deserialize(String errorFileName) {
-        return new ManifestYamlParser().deserializeManifest(new File("src/test/resources/architectures/errors/" + errorFileName));
+        return new ManifestYamlParser(new ComponentGitRepositoryFactory(GitHostConfigRepository.defaultConfig()))
+            .deserializeManifest(new File("src/test/resources/architectures/errors/" + errorFileName));
     }
 
     @Test

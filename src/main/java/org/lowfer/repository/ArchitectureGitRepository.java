@@ -1,8 +1,6 @@
 package org.lowfer.repository;
 
-import org.eclipse.jgit.api.Git;
 import org.eclipse.jgit.api.errors.GitAPIException;
-import org.eclipse.jgit.transport.UsernamePasswordCredentialsProvider;
 import org.lowfer.domain.common.SoftwareArchitecture;
 import org.lowfer.serde.MasterManifestDeserializer;
 import org.slf4j.Logger;
@@ -13,44 +11,37 @@ import org.springframework.stereotype.Repository;
 
 import java.io.File;
 import java.io.IOException;
+import java.net.URISyntaxException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.List;
 import java.util.Optional;
 
 @Repository
-@ConditionalOnProperty(prefix = "application.architectures.", value = "repository.uri")
+@ConditionalOnProperty(prefix = "architectures.", value = "repository.uri")
 public class ArchitectureGitRepository implements ArchitectureRepository {
 
     private static final Logger LOG = LoggerFactory.getLogger(ArchitectureGitRepository.class);
 
-    private final Git repository;
     private final ArchitectureDirectoryRepository architectureDirectoryRepository;
 
     public ArchitectureGitRepository(
         MasterManifestDeserializer masterManifestDeserializer,
-        @Value("${application.architectures.repository.uri}") String uri,
-        @Value("${application.architectures.repository.branch:master}") String branch,
-        @Value("${application.architectures.repository.path:/}") String path,
-        @Value("${application.architectures.repository.username:}") String username,
-        @Value("${application.architectures.repository.password:}") String password) throws IOException, GitAPIException {
+        GitHostConfigRepository gitHostConfigRepository,
+        @Value("${architectures.repository.uri}") String uri,
+        @Value("${architectures.repository.branch:master}") String branch,
+        @Value("${architectures.repository.path:/}") String path)
+        throws IOException, GitAPIException, URISyntaxException {
 
-        final File directoryFile = Files.createTempDirectory("lowfer-versioned-architectures-").toFile();
+        final File directory = Files.createTempDirectory("lowfer-versioned-architectures-").toFile();
+        LOG.info("Created temp directory ({}) for repository: {}", directory, uri);
 
-        LOG.info("Created temp directory ({}) for repository: {}", directoryFile, uri);
+        final GitHostConfig gitHostConfig = gitHostConfigRepository.fromUri(uri);
+        final GitPullConfig gitPullConfig = new GitPullConfig(uri, branch, gitHostConfig, directory);
 
-        LOG.info("Cloning branch {} of git repository: {}...", branch, uri);
+        GitUtils.pull(gitPullConfig);
 
-        this.repository = Git.cloneRepository()
-            .setURI(uri)
-            .setDirectory(directoryFile)
-            .setCredentialsProvider(new UsernamePasswordCredentialsProvider(username, password))
-            .setBranch(branch)
-            .call();
-
-        LOG.info("Cloned git repository ({}) with {} branch(es)", uri, repository.branchList().call().size());
-
-        final Path fullPath = Path.of(directoryFile.getPath(), path);
+        final Path fullPath = Path.of(directory.getPath(), path);
 
         this.architectureDirectoryRepository =
             new ArchitectureDirectoryRepository(fullPath.toString(), masterManifestDeserializer);
@@ -65,6 +56,4 @@ public class ArchitectureGitRepository implements ArchitectureRepository {
     public List<SoftwareArchitecture> findAll() {
         return architectureDirectoryRepository.findAll();
     }
-
-
 }
