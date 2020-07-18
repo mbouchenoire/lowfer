@@ -19,9 +19,6 @@ cache:
   directories:
     - $HOME/.gradle/caches/
     - $HOME/.gradle/wrapper/
-    - $HOME/build/
-    - $HOME/node_modules/
-    - $HOME/out/
 
 stages:
   - build
