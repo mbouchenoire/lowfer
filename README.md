@@ -10,9 +10,9 @@ You can use Lowfer locally in your browser at http://localhost:8080 using Docker
 
 ```shell script
 docker run \
-    -e APPLICATION_ARCHITECTURES_REPOSITORY_URI=https://github.com/mbouchenoire/lowfer.git \
-    -e APPLICATION_ARCHITECTURES_REPOSITORY_BRANCH=0.1.0 \
-    -e APPLICATION_ARCHITECTURES_REPOSITORY_PATH=src/test/resources/architectures/demo \
-    -p 8080:8080
+    -e ARCHITECTURES_REPOSITORY_URI=https://github.com/mbouchenoire/lowfer.git \
+    -e ARCHITECTURES_REPOSITORY_BRANCH=master \
+    -e ARCHITECTURES_REPOSITORY_PATH=src/test/resources/architectures/demo \
+    -p 8080:8080 \
     mbouchenoire/lowfer:latest
 ```
