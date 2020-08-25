@@ -34,14 +34,3 @@ jobs:
       script:
         - ./gradlew test integrationTest
         - npm test
-    - stage: publish
-      if: repo = mbouchenoire/lowfer AND type IN (tag)
-      script:
-        - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
-        - ./gradlew jib -Djib.to.image=registry.hub.docker.com/mbouchenoire/lowfer:${TRAVIS_TAG}
-        - ./gradlew jib -Djib.to.image=registry.hub.docker.com/mbouchenoire/lowfer:latest
-    - stage: publish
-      if: repo = mbouchenoire/lowfer AND (NOT (type IN (tag)))
-      script:
-        - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
-        - ./gradlew jib -Djib.to.image=registry.hub.docker.com/mbouchenoire/lowfer:${TRAVIS_BRANCH}-snapshot
