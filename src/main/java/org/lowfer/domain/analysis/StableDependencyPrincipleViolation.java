@@ -53,7 +53,7 @@ public final class StableDependencyPrincipleViolation implements Issue {
             component.getLabel(),
             dependency.getComponentName(),
             architecture.instability(component),
-            architecture.instability(dependency).orElseThrow());
+            architecture.instability(dependency).orElseThrow(() -> new IllegalStateException("Failed to find instability for dependency: " + dependency)));
     }
 
     @Override

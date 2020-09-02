@@ -158,7 +158,8 @@ public class ManifestYamlParser implements ManifestSerializer, MasterManifestDes
                     .map(dependencies -> new SoftwareComponent(
                         componentYaml.getName(),
                         componentYaml.getLabel(),
-                        SoftwareComponentType.fromSerializedName(componentYaml.getType()).orElseThrow(),
+                        SoftwareComponentType.fromSerializedName(componentYaml.getType())
+                            .orElseThrow(() -> new IllegalStateException("Failed to find component type: " + componentYaml.getType())),
                         componentYaml.getContext(),
                         repository,
                         maintainers,

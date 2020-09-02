@@ -62,7 +62,8 @@ public final class ApplyStableDependencyPrincipleIssueFinder implements IssueFin
 
         return currentComponent.getDependencies().stream()
                 .flatMap(dependency -> {
-                    final SoftwareComponent dependencyComponent = architecture.findComponent(dependency).orElseThrow();
+                    final SoftwareComponent dependencyComponent = architecture.findComponent(dependency)
+                        .orElseThrow(() -> new IllegalStateException("Failed to find component related to dependency: " + dependency));
 
                     if (dependencyComponent.isExternal()) {
                         LOG.trace("Component '{}' is external, Stable Dependency Principle does not apply (architecture: {})", currentComponent.getName(), architecture.getName());

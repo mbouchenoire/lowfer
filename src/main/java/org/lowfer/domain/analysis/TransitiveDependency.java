@@ -98,7 +98,7 @@ public final class TransitiveDependency implements Issue {
         return dependencyChains.stream()
             .min(Comparator.comparingInt(o -> o.getComponents().size()))
             .map(DependencyChain::getSignature)
-            .orElseThrow();
+            .orElseThrow(() -> new IllegalStateException("Failed to get minimal chain signature for:" + this));
     }
 
     @Override

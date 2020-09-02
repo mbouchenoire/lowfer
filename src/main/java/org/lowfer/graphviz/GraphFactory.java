@@ -26,7 +26,10 @@ import guru.nidi.graphviz.model.Graph;
 import guru.nidi.graphviz.model.Link;
 import guru.nidi.graphviz.model.Node;
 import io.vavr.Tuple;
-import org.lowfer.domain.common.*;
+import org.lowfer.domain.common.AutonomousDependency;
+import org.lowfer.domain.common.SoftwareArchitecture;
+import org.lowfer.domain.common.SoftwareComponent;
+import org.lowfer.domain.common.SoftwareComponentType;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -37,7 +40,8 @@ import java.util.stream.Collectors;
 
 import static guru.nidi.graphviz.model.Factory.graph;
 import static guru.nidi.graphviz.model.Factory.node;
-import static java.util.stream.Collectors.*;
+import static java.util.stream.Collectors.toList;
+import static java.util.stream.Collectors.toUnmodifiableList;
 
 public final class GraphFactory {
 
@@ -72,7 +76,8 @@ public final class GraphFactory {
                 .map(dependency -> new AutonomousDependency(
                     dependency,
                     component,
-                    architecture.findComponentByName(dependency.getComponentName()).orElseThrow())))
+                    architecture.findComponentByName(dependency.getComponentName())
+                        .orElseThrow(() -> new IllegalStateException("Failed to find component by name: " + dependency.getComponentName())))))
             .filter(dependency -> nodes.containsKey(dependency.getSource()) && nodes.containsKey(dependency.getTarget()))
             .filter(dependency -> aggregateFilter(dependency.getSource(), options))
             .filter(dependency -> aggregateFilter(dependency.getTarget(), options))
