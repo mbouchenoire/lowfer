@@ -77,10 +77,12 @@ function* getMaintainers(
 }
 
 function* getInitial() {
-  const encodedArchitecture = yield select(
+  const encodedArchitecture: string = yield select(
     studioSelectors.getCurrentEncodedArchitecture
   );
-  const architectureName = yield select(architecturesSelectors.getCurrentName);
+  const architectureName: string = yield select(
+    architecturesSelectors.getCurrentName
+  );
   const params = new URLSearchParams(window.location.search);
   const components = params.get('components');
 
