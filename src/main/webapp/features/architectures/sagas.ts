@@ -21,7 +21,7 @@ import { all, call, put, takeLatest } from 'redux-saga/effects';
 
 import { actions } from './slice';
 import { architectureResourceApi, basePath } from '../../services/config';
-import { ArchitectureListItemView } from '../../services';
+import { ArchitectureListItemView, ArchitectureListView } from '../../services';
 
 function* get() {
   const params = new URLSearchParams(window.location.search);
@@ -29,15 +29,19 @@ function* get() {
 
   const request = architectureResourceApi.getArchitecturesUsingGET();
   try {
-    const { data } = yield call(request, undefined, basePath);
+    const { data }: { data: ArchitectureListView } = yield call(
+      request,
+      undefined,
+      basePath
+    );
+    if (!data.architectures) return;
     yield put(actions.getListSuccess(data.architectures));
     if (architectureName) {
-      const index =
-        data.architectures.findIndex(
-          (architecture: ArchitectureListItemView) =>
-            architecture.name === architectureName
-        ) || null;
-      yield put(actions.setIndex(index));
+      const index = data.architectures.findIndex(
+        (architecture: ArchitectureListItemView) =>
+          architecture.name === architectureName
+      );
+      if (index !== -1) yield put(actions.setIndex(index));
       architectureName = null;
     }
   } catch (err) {
