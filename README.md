@@ -1,7 +1,7 @@
 # Lowfer
 
 [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0) &nbsp;
-[![CI/CD](https://github.com/mbouchenoire/lowfer/actions/workflows/ci-cd.yml/badge.svg?branch=master)](https://github.com/mbouchenoire/lowfer/actions/workflows/ci-cd.yml)
+[![ci-cd](https://github.com/mbouchenoire/lowfer/actions/workflows/ci-cd.yml/badge.svg)](https://github.com/mbouchenoire/lowfer/actions/workflows/ci-cd.yml)
 [![Docker Hub](https://img.shields.io/docker/pulls/mbouchenoire/lowfer.svg)](https://hub.docker.com/r/mbouchenoire/lowfer) &nbsp;
 
 Lowfer is a simple tool that helps software engineers and architects document,
@@ -21,13 +21,12 @@ Live-edit your architecture definition within a Web IDE:
 
 ### Issues
 Find issues in your architecture using a built-in static-analysis tool:
-
 ![Issues](docs/images/issues.png)
 
 ## Quick Start
 
-Lowfer is contained within a single Docker image, you can
-You can use Lowfer locally in your browser at http://localhost:8080 using Docker only:
+Lowfer is contained within a single Docker image.
+You can run it locally and access it in your browser (`http://localhost:8080`) with this command:
 
 ```shell script
 docker run \
