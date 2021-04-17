@@ -1,6 +1,13 @@
 name: ci-only
 
-on: [push, pull_request]
+on:
+  push:
+    tags-ignore:
+      - *
+  pull_request:
+    types:
+      - opened
+      - edited
 
 jobs:
   build:
@@ -14,6 +21,15 @@ jobs:
       - uses: actions/setup-node@v2
         with:
           node-version: '12'
+      - uses: actions/cache@v2
+        with:
+          path: |
+            ~/.gradle/caches
+            ~/.gradle/wrapper
+            ~/.npm
+          key: ${{ runner.os }}-gradle-npm-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties', '**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-gradle-npm-
       - name: build
         run: ./gradlew -Pprod clean bootJar
   test:
@@ -28,6 +44,15 @@ jobs:
       - uses: actions/setup-node@v2
         with:
           node-version: '12'
+      - uses: actions/cache@v2
+        with:
+          path: |
+            ~/.gradle/caches
+            ~/.gradle/wrapper
+            ~/.npm
+          key: ${{ runner.os }}-gradle-npm-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties', '**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-gradle-npm-
       - name: test
         run: |
           ./gradlew test integrationTest
