@@ -3,7 +3,7 @@ name: ci-only
 on:
   push:
     tags-ignore:
-      - *
+      - '*'
   pull_request:
     types:
       - opened
