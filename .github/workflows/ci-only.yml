@@ -1,13 +1,6 @@
 name: ci-only
 
-on:
-  push:
-    tags-ignore:
-      - '*'
-  pull_request:
-    types:
-      - opened
-      - edited
+on: [push, pull_request]
 
 jobs:
   build:
