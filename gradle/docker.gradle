@@ -15,6 +15,11 @@ jib {
             SPRING_OUTPUT_ANSI_ENABLED: "ALWAYS"
         ]
         useCurrentTimestamp = true
+        extraDirectories {
+            permissions = [
+                '/entrypoint.sh': '777'
+            ]
+        }
     }
 }
 
