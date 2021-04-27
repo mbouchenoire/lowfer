@@ -9,7 +9,7 @@ jib {
         }
     }
     container {
-        entrypoint = ["sh", "-c", "chmod +x /entrypoint.sh && sync && /entrypoint.sh"]
+        entrypoint = ["sh", "-c", "sync && /entrypoint.sh"]
         ports = ["8080"]
         environment = [
             SPRING_OUTPUT_ANSI_ENABLED: "ALWAYS"
