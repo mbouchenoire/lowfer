@@ -81,5 +81,4 @@ jobs:
       - name: release
         run: |
           echo "${{ secrets.DOCKER_PASSWORD }}" | docker login -u "${{ secrets.DOCKER_USERNAME }}" --password-stdin
-          chmod +x src/main/jib/entrypoint.sh
           ./gradlew jib -Djib.to.image=registry.hub.docker.com/mbouchenoire/lowfer:${{ env.RELEASE_VERSION }}
