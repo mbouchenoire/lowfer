@@ -76,6 +76,16 @@ export const slice = createSlice({
   name: 'filters',
   initialState,
   reducers: {
+    addFilters: (state, action: PayloadAction<SetFilterPayload>) => {
+      const values = [
+        ...new Set([
+          ...state.filters[action.payload.name],
+          ...action.payload.value
+        ])
+      ];
+      state.filters[action.payload.name] = values;
+      state.error = null;
+    },
     getInitial: (state) => {
       state.status = FilterStatus.FETCHING;
       state.error = null;

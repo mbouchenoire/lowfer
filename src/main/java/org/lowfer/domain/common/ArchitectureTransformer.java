@@ -64,7 +64,7 @@ public class ArchitectureTransformer {
             .distinct()
             .collect(toMap(
                 ContextualizedComponents::getComponents,
-                components -> agg(components.getComponents().size(), components.getContext().orElse(null))));
+                components -> agg(components.getComponents(), components.getContext().orElse(null))));
 
         // aggregates are ok
 

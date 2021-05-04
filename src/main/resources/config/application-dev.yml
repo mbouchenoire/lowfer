@@ -82,3 +82,6 @@ jhipster:
 # More documentation is available at:
 # https://www.jhipster.tech/common-application-properties/
 # ===================================================================
+
+architectures:
+  directory: src/test/resources/architectures/demo

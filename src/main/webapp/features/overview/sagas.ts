@@ -72,6 +72,7 @@ export default function* root() {
   yield all([
     takeLatest(actions.get, get),
     takeLatest(appActions.setSource, get),
+    takeLatest(filtersActions.addFilters, get),
     takeLatest(filtersActions.setFilters, get),
     takeLatest(graphActions.setDirection, get),
     takeLatest(graphActions.setType, get),

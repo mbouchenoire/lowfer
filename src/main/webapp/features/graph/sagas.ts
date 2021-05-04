@@ -23,6 +23,39 @@ import { actions, selectors } from './slice';
 import { coarse } from './utils';
 import { mutationConfig, mutationObserver } from './observer';
 import { PayloadAction } from '@reduxjs/toolkit';
+import { store } from '../../store';
+import { actions as filtersActions } from '../filters/slice';
+
+const getAgregateNodes = () =>
+  [...document.querySelectorAll('g[class=node]')].filter((e) =>
+    [...e.children].some(
+      (c) => c.tagName === 'text' && c.textContent?.[0] === '+'
+    )
+  );
+
+const onClickOnAggregate = (e: any) => {
+  let elem: Node | null | undefined = e.target;
+  do {
+    if (elem?.nodeName === 'g') {
+      for (const child of elem.childNodes) {
+        if (child.nodeName === 'title' && child.textContent != null) {
+          store.dispatch(
+            filtersActions.addFilters({
+              name: 'components',
+              value: child.textContent.split(';')
+            })
+          );
+
+          break;
+        }
+      }
+
+      break;
+    }
+
+    elem = elem?.parentElement;
+  } while (elem !== null);
+};
 
 const graphvizWork = (d3Elm: any, dot: string) =>
   new Promise((resolve) => {
@@ -41,6 +74,10 @@ const graphvizWork = (d3Elm: any, dot: string) =>
         window.d3.transition('main').ease(window.d3.easeSinInOut).duration(200)
       )
       .on('end', () => {
+        getAgregateNodes().forEach((node) =>
+          node.addEventListener('click', onClickOnAggregate)
+        );
+
         resolve();
       });
   });
