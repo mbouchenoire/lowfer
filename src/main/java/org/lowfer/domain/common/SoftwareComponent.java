@@ -23,6 +23,7 @@ import org.lowfer.repository.AsyncComponentGitRepository;
 
 import javax.annotation.Nullable;
 import java.util.*;
+import java.util.stream.Collectors;
 
 import static java.util.Collections.emptySet;
 import static java.util.stream.Collectors.toList;
@@ -56,8 +57,9 @@ public class SoftwareComponent {
         this.dependencies = Collections.unmodifiableCollection(dependencies);
     }
 
-    static SoftwareComponent agg(long aggSize, @Nullable String context) {
-        return new SoftwareComponent(UUID.randomUUID().toString(), "+" + aggSize, AGGREGATE, context, null, emptySet(), emptySet());
+    static SoftwareComponent agg(Set<SoftwareComponent> components, @Nullable String context) {
+        final String name = components.stream().map(SoftwareComponent::getName).collect(Collectors.joining(";"));
+        return new SoftwareComponent(name, "+" + components.size(), AGGREGATE, context, null, emptySet(), emptySet());
     }
 
     public long weight() {
