@@ -28,8 +28,13 @@ public final class InternalComponentFilter implements SoftwareComponentFilter {
     }
 
     @Override
+    public boolean isSet() {
+        return apply;
+    }
+
+    @Override
     public boolean test(SoftwareArchitecture architecture, SoftwareComponent component) {
-        return !component.isExternal() || !apply;
+        return !component.isExternal() && apply;
     }
 
     @Override

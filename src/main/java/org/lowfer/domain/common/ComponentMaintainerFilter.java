@@ -45,10 +45,12 @@ public final class ComponentMaintainerFilter implements SoftwareComponentFilter 
     }
 
     @Override
-    public boolean test(SoftwareArchitecture architecture, SoftwareComponent component) {
-        if (maintainerNames.isEmpty())
-            return true;
+    public boolean isSet() {
+        return !maintainerNames.isEmpty();
+    }
 
+    @Override
+    public boolean test(SoftwareArchitecture architecture, SoftwareComponent component) {
         return maintainerNames.stream()
                 .anyMatch(maintainerName -> component.getMaintainers().stream()
                         .anyMatch(maintainer -> maintainer.getName().equals(maintainerName)));

@@ -49,10 +49,12 @@ public final class ComponentTypeFilter implements SoftwareComponentFilter {
     }
 
     @Override
-    public boolean test(SoftwareArchitecture architecture, SoftwareComponent component) {
-        if (componentTypes.isEmpty())
-            return true;
+    public boolean isSet() {
+        return !componentTypes.isEmpty();
+    }
 
+    @Override
+    public boolean test(SoftwareArchitecture architecture, SoftwareComponent component) {
         return componentTypes.contains(component.getType());
     }
 }

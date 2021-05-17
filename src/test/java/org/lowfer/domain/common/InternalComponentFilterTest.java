@@ -38,7 +38,7 @@ class InternalComponentFilterTest {
         final SoftwareArchitecture architecture =
             new SoftwareArchitecture("architecture", Set.of(internal, external));
 
-        assertTrue(new InternalComponentFilter(false).test(architecture, external));
+        assertFalse(new InternalComponentFilter(false).test(architecture, external));
         assertFalse(new InternalComponentFilter(true).test(architecture, external));
     }
 }

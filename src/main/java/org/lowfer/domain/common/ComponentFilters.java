@@ -48,10 +48,12 @@ public final class ComponentFilters implements SoftwareComponentFilter {
 
     @Override
     public boolean test(SoftwareArchitecture architecture, SoftwareComponent component) {
+        if (!nameFilter.isSet() && !typeFilter.isSet() && !maintainerFilter.isSet() && !internalFilter.isSet()) return true;
+
         return nameFilter.test(architecture, component)
-            && typeFilter.test(architecture, component)
-            && maintainerFilter.test(architecture, component)
-            && internalFilter.test(architecture, component);
+            || typeFilter.test(architecture, component)
+            || maintainerFilter.test(architecture, component)
+            || internalFilter.test(architecture, component);
     }
 
     public static class Builder {
