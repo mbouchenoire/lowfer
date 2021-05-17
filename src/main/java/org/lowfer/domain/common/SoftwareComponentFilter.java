@@ -21,6 +21,10 @@ package org.lowfer.domain.common;
 
 public interface SoftwareComponentFilter {
 
+    default boolean isSet() {
+        return false;
+    }
+
     boolean test(SoftwareArchitecture architecture, SoftwareComponent component);
 
     // TODO ?

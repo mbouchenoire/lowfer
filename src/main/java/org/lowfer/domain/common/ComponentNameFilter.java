@@ -45,10 +45,12 @@ public final class ComponentNameFilter implements SoftwareComponentFilter {
     }
 
     @Override
-    public boolean test(SoftwareArchitecture architecture, SoftwareComponent component) {
-        if (componentNames.isEmpty())
-            return true;
+    public boolean isSet() {
+        return !componentNames.isEmpty();
+    }
 
+    @Override
+    public boolean test(SoftwareArchitecture architecture, SoftwareComponent component) {
         return componentNames.contains(component.getName());
     }
 }
