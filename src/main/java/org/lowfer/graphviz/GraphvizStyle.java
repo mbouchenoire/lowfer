@@ -20,6 +20,7 @@
 package org.lowfer.graphviz;
 
 import guru.nidi.graphviz.attribute.*;
+import org.apache.commons.lang3.StringUtils;
 import org.lowfer.config.Color;
 import org.lowfer.domain.common.*;
 
@@ -115,6 +116,10 @@ public interface GraphvizStyle {
     private MapAttributes<ForNode> labelAndShape(SoftwareComponent component) {
         final var attrs = new MapAttributes<>()
             .add("label", component.getLabel());
+
+        if (StringUtils.isNoneBlank(component.getDescription())) {
+            attrs.add("tooltip", component.getDescription());
+        }
 
         switch (component.getType()) {
             case LIBRARY:

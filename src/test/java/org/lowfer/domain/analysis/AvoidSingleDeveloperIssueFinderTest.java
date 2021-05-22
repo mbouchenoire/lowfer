@@ -44,6 +44,7 @@ class AvoidSingleDeveloperIssueFinderTest {
         final SoftwareComponent helloWorldComponent = new SoftwareComponent(
             "hello-world",
             "",
+            null,
             SoftwareComponentType.SERVICE,
             null,
             repository,
@@ -86,6 +87,7 @@ class AvoidSingleDeveloperIssueFinderTest {
         final SoftwareComponent helloWorldComponent = new SoftwareComponent(
             "hello-world",
             "",
+            null,
             SoftwareComponentType.SERVICE,
             null,
             repository,
