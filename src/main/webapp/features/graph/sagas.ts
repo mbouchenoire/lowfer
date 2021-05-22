@@ -91,7 +91,7 @@ function* renderGraph(action: PayloadAction<string | undefined>) {
   const d3Elm = window.d3.select(graphDom);
   if (!d3Elm) return;
   yield call(graphvizWork, d3Elm, dot);
-  const coarsed = yield select(selectors.getCoarsed);
+  const coarsed: boolean = yield select(selectors.getCoarsed);
   if (!coarsed) {
     mutationObserver.disconnect();
     yield put(actions.renderGraphSuccess());
