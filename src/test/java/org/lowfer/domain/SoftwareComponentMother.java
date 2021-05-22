@@ -48,6 +48,7 @@ public final class SoftwareComponentMother {
         return new SoftwareComponent(
                 name,
                 name,
+                null,
                 type,
                 null,
                 null,
@@ -59,6 +60,7 @@ public final class SoftwareComponentMother {
         return new SoftwareComponent(
                 name,
                 name,
+                null,
                 type,
                 null,
                 null,
@@ -74,6 +76,7 @@ public final class SoftwareComponentMother {
         return new SoftwareComponent(
                 name,
                 name,
+                null,
                 type,
                 null,
                 null,

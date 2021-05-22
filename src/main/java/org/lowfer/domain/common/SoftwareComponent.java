@@ -19,6 +19,7 @@
 
 package org.lowfer.domain.common;
 
+import org.apache.commons.lang3.StringUtils;
 import org.lowfer.repository.AsyncComponentGitRepository;
 
 import javax.annotation.Nullable;
@@ -33,6 +34,7 @@ public class SoftwareComponent {
 
     private final String name;
     private final String label;
+    private final String description;
     private final SoftwareComponentType type;
     private final String context;
     private final AsyncComponentGitRepository repository;
@@ -42,6 +44,7 @@ public class SoftwareComponent {
     public SoftwareComponent(
         String name,
         String label,
+        String description,
         SoftwareComponentType type,
         @Nullable String context,
         @Nullable AsyncComponentGitRepository repository,
@@ -50,6 +53,7 @@ public class SoftwareComponent {
 
         this.name = name;
         this.label = label;
+        this.description = description;
         this.type = type;
         this.context = context;
         this.repository = repository;
@@ -58,8 +62,10 @@ public class SoftwareComponent {
     }
 
     static SoftwareComponent agg(Set<SoftwareComponent> components, @Nullable String context) {
-        final String name = components.stream().map(SoftwareComponent::getName).collect(Collectors.joining(";"));
-        return new SoftwareComponent(name, "+" + components.size(), AGGREGATE, context, null, emptySet(), emptySet());
+        final var name = UUID.randomUUID().toString();
+        final String label = "+" + components.size();
+        final String description = components.stream().map(SoftwareComponent::getLabel).collect(Collectors.joining(";"));
+        return new SoftwareComponent(name, label, description, AGGREGATE, context, null, emptySet(), emptySet());
     }
 
     public long weight() {
@@ -75,7 +81,7 @@ public class SoftwareComponent {
             .collect(toList())
             .contains(componentDependency.getComponentName()));
 
-        return new SoftwareComponent(name, label, type, context, repository, maintainers, updatedDependencies);
+        return new SoftwareComponent(name, label, description, type, context, repository, maintainers, updatedDependencies);
     }
 
     SoftwareComponent addDependency(ComponentDependency dependency) {
@@ -88,7 +94,7 @@ public class SoftwareComponent {
 
         final Set<ComponentDependency> updatedDependencies = new HashSet<>(this.dependencies);
         updatedDependencies.addAll(dependencies);
-        return new SoftwareComponent(name, label, type, context, repository, maintainers, updatedDependencies);
+        return new SoftwareComponent(name, label, description, type, context, repository, maintainers, updatedDependencies);
     }
 
     public String getName() {
@@ -97,6 +103,10 @@ public class SoftwareComponent {
 
     public String getLabel() {
         return label;
+    }
+
+    public String getDescription() {
+        return description;
     }
 
     public SoftwareComponentType getType() {

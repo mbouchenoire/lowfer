@@ -21,6 +21,8 @@ export const Basic = `name: Basic
 
 components:
   - name: Frontend
+    label: Customer Portal
+    description: The customer portal frontend
     type: frontend
     dependencies:
       - component: API

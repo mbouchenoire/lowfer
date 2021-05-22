@@ -32,6 +32,7 @@ public class SoftwareComponentYaml {
 
     private String name;
     private String label;
+    private String description;
     private String type;
     private String context;
     private String repository;
@@ -41,6 +42,7 @@ public class SoftwareComponentYaml {
     SoftwareComponentYaml() {
         this.name = null;
         this.label = null;
+        this.description = null;
         this.type = null;
         this.context = null;
         this.repository = null;
@@ -51,6 +53,7 @@ public class SoftwareComponentYaml {
     public SoftwareComponentYaml(SoftwareComponent component) {
         this.name = component.getName();
         this.label = component.getLabel();
+        this.description = component.getDescription();
         this.type = component.getType().getName();
         this.context = component.getContext().orElse(null);
         this.maintainers = component.getMaintainers().stream()
@@ -75,6 +78,14 @@ public class SoftwareComponentYaml {
 
     public void setLabel(String label) {
         this.label = label;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 
     public String getType() {
