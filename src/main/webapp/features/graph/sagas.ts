@@ -37,6 +37,7 @@ const onClickOnAggregate = (e: any) => {
   let elem: Node | null | undefined = e.target;
   do {
     if (elem?.nodeName === 'g') {
+      elem.removeEventListener('click', onClickOnAggregate);
       for (const child of elem.childNodes) {
         if (child.nodeName === 'title' && child.textContent != null) {
           store.dispatch(
