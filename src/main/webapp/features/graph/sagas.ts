@@ -29,7 +29,15 @@ import { actions as filtersActions } from '../filters/slice';
 const getAgregateNodes = () =>
   [...document.querySelectorAll('g[class=node]')].filter((e) =>
     [...e.children].some(
-      (c) => c.tagName === 'text' && c.textContent?.[0] === '+'
+      (c1) =>
+        c1.tagName === 'g' &&
+        [...c1.children].some(
+          (c2) =>
+            c2.tagName === 'a' &&
+            [...c2.children].some(
+              (c3) => c3.tagName === 'text' && c3.textContent?.[0] === '+'
+            )
+        )
     )
   );
 
@@ -37,13 +45,14 @@ const onClickOnAggregate = (e: any) => {
   let elem: Node | null | undefined = e.target;
   do {
     if (elem?.nodeName === 'g') {
-      elem.removeEventListener('click', onClickOnAggregate);
-      for (const child of elem.childNodes) {
-        if (child.nodeName === 'title' && child.textContent != null) {
+      elem.parentElement?.removeEventListener('click', onClickOnAggregate);
+      for (const n of elem.childNodes) {
+        const e = n as Element;
+        if (e.nodeName === 'a' && e.hasAttribute('title')) {
           store.dispatch(
             filtersActions.addFilters({
               name: 'components',
-              value: child.textContent.split(';')
+              value: e.getAttribute('title')?.split(';') ?? []
             })
           );
 
