@@ -34,5 +34,5 @@ docker run \
     -e ARCHITECTURES_REPOSITORY_BRANCH=master \
     -e ARCHITECTURES_REPOSITORY_PATH=src/test/resources/architectures/demo \
     -p 8080:8080 \
-    mbouchenoire/lowfer:latest
+    mbouchenoire/lowfer:0.3.1
 ```
