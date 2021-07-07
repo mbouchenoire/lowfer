@@ -7,7 +7,7 @@
 Lowfer is a simple tool that helps software engineers and architects document,
 discuss & analyse software design and architecture.
 
-Define your architecture using YAML files and host them in a Git repository, 
+Define your architecture using YAML (or anything similar) files and host them in a Git repository, 
 Lowfer will then use this repository as it's "database". 
 
 Using a Git repository as a source of truth for your architecture definition allows 
