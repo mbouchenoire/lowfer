@@ -24,6 +24,7 @@
 }
 
 .Overview-container {
+  position: relative;
   display: flex;
   flex-direction: column;
   flex-grow: 1;
@@ -39,4 +40,11 @@
 
 .Statistics {
   min-height: 5em;
+}
+
+.Overlay {
+  position: absolute;
+  top: 2em;
+  left: 2em;
+  opacity: 0.5;
 }
