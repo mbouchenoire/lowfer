@@ -17,20 +17,19 @@
  * limitations under the License.
  */
 
-import React, { useEffect } from 'react';
-import { Message } from 'semantic-ui-react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-
-import { actions, selectors } from './slice';
-import { selectors as architecturesSelectors } from '../architectures/slice';
-import { selectors as studioSelectors } from '../studio/slice';
+import { Button, Message } from 'semantic-ui-react';
 import Error from '../../components/Error';
+import { selectors as architecturesSelectors } from '../architectures/slice';
 import Filters from '../filters/Filters';
 import Graph from '../graph/Graph';
-
+import { selectors as studioSelectors } from '../studio/slice';
+import { actions, selectors } from './slice';
 import './styles.scss';
 
 const Overview = () => {
+  const [sidebarVisibility, setSidebarVisibility] = useState(false);
   const dispatch = useDispatch();
   const dot = useSelector(selectors.getDot) ?? '';
   const error = useSelector(selectors.getError);
@@ -44,30 +43,52 @@ const Overview = () => {
     dispatch(actions.get());
   }, [dispatch]);
 
+  const toggleSidebarVisibility = useCallback(() => {
+    setSidebarVisibility(!sidebarVisibility);
+  }, [sidebarVisibility]);
+
   return (
-    <div className="Overview">
-      {currentArchitectureName === null && currentDraftIndex === null ? (
-        <Message
-          className="NoDraft"
-          icon="info"
-          info
-          header="No architecture selected"
-          content="Please select an architecture"
-        />
-      ) : (
-        <>
+    <div className="ui bottom attached segment pushable">
+      {sidebarVisibility ? (
+        <div className="ui left vertical sidebar menu visible">
           <Filters />
-          <div className="Overview-container">
-            <div className="Overview-graphContainer">
-              {error !== null ? (
-                <Error error={error} />
-              ) : (
-                <Graph isFetching={isFetching} dot={dot} />
-              )}
-            </div>
-          </div>
-        </>
+        </div>
+      ) : (
+        <div className="ui left vertical sidebar menu">
+          <Filters />
+        </div>
       )}
+
+      <div className="pusher Overview">
+        {currentArchitectureName === null && currentDraftIndex === null ? (
+          <Message
+            className="NoDraft"
+            icon="info"
+            info
+            header="No architecture selected"
+            content="Please select an architecture"
+          />
+        ) : (
+          <>
+            <div className="Overview-container">
+              <div className="Overview-graphContainer">
+                {error !== null ? (
+                  <Error error={error} />
+                ) : (
+                  <Graph isFetching={isFetching} dot={dot} />
+                )}
+              </div>
+            </div>
+            <Button
+              className="Overlay"
+              variant="secondary"
+              onClick={toggleSidebarVisibility}
+            >
+              {sidebarVisibility ? 'Hide filters' : 'Show Filters'}
+            </Button>
+          </>
+        )}
+      </div>
     </div>
   );
 };
