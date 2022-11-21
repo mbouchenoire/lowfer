@@ -6,7 +6,7 @@
     "node": "~12.16.1"
   },
   "devDependencies": {
-    "@mdx-js/loader": "^1.5.8",
+    "@mdx-js/loader": "^1.6.6",
     "@openapitools/openapi-generator-cli": "0.0.19-4.1.2",
     "eslint-plugin-react-hooks": "^4.0.4"
   },
@@ -77,7 +77,7 @@
     "ramda": "^0.27.0",
     "react": "^16.13.1",
     "react-app-polyfill": "^1.0.6",
-    "react-dev-utils": "^11.0.4",
+    "react-dev-utils": "^12.0.1",
     "react-dom": "^16.13.1",
     "react-redux": "^7.2.0",
     "react-router-dom": "^5.1.2",
@@ -85,7 +85,7 @@
     "redux-persist": "^6.0.0",
     "redux-saga": "^1.1.3",
     "resolve": "1.15.0",
-    "resolve-url-loader": "3.1.1",
+    "resolve-url-loader": "5.0.0",
     "roughjs": "^3.1.0",
     "sass-loader": "8.0.2",
     "save-svg-as-png": "^1.4.17",
