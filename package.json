@@ -91,7 +91,7 @@
     "save-svg-as-png": "^1.4.17",
     "semantic-ui-css": "^2.4.1",
     "semantic-ui-react": "^0.88.2",
-    "semver": "6.3.0",
+    "semver": "6.3.1",
     "style-loader": "0.23.1",
     "terser-webpack-plugin": "2.3.5",
     "ts-pnp": "1.1.6",
